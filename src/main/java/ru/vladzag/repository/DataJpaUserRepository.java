@@ -39,6 +39,6 @@ public class DataJpaUserRepository {
 
 
     public List<User> getAll() {
-        return crudRepository.findAll(SORT_NAME_EMAIL);
+        return crudRepository.findAll();
     }
 }
