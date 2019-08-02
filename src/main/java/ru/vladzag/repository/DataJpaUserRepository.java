@@ -20,10 +20,12 @@ public class DataJpaUserRepository {
         return crudRepository.save(user);
     }
 
-
+/*
     public boolean delete(int id) {
         return crudRepository.delete(id) != 0;
     }
+
+ */
 
 
     public User get(int id) {
@@ -31,9 +33,9 @@ public class DataJpaUserRepository {
     }
 
 
-    public User getByEmail(String email) {
-        return crudRepository.getByEmail(email);
-    }
+    //public User getByEmail(String email) {
+        //return crudRepository.getByEmail(email);
+    //}
 
 
     public List<User> getAll() {
