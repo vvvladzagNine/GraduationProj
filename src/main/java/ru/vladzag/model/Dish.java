@@ -1,8 +1,9 @@
 package ru.vladzag.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,12 +21,37 @@ public class Dish extends AbstractNamedEntity {
     @NotNull
     private int price;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "res_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Restaurant restaurant;
+
     public Dish(String name, Integer price) {
         this.name = name;
         this.price = price;
     }
 
     public Dish() {
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public String getName() {

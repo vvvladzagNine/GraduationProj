@@ -12,7 +12,7 @@ import ru.vladzag.model.Restaurant;
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
+
 public interface RestaurantJpaRepo extends JpaRepository<Restaurant,Integer> {
 
     Restaurant getById(int id);

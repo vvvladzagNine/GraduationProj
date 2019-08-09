@@ -36,6 +36,7 @@ CREATE TABLE restaurants
 
 CREATE TABLE res_dishes
 (
+    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     date TIMESTAMP NOT NULL,
     res_id INTEGER NOT NULL,
     name    VARCHAR NOT NULL,
@@ -47,6 +48,7 @@ CREATE TABLE res_dishes
 
 CREATE TABLE votes
 (
+    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     res_id INTEGER NOT NULL,
     date TIMESTAMP DEFAULT now() NOT NULL,
     user_id INTEGER NOT NULL ,
