@@ -25,10 +25,34 @@
 
         <!--DB-->
         <postgresql.version>42.2.6</postgresql.version>
-        <!--    Tests  -->
-        <junit.version>4.12</junit.version>
-        <junit.jupiter.version>5.5.1</junit.jupiter.version>
-        <hamcrest.version>1.3</hamcrest.version>
+
+
+        <!--Test-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.12.2</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Hibernate -->
         <hibernate.version>5.4.3.Final</hibernate.version>
