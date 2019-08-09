@@ -50,6 +50,10 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
 
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "voter")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Vote> votes;
+
+
 
 
 
