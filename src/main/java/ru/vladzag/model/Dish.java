@@ -26,13 +26,16 @@ public class Dish extends AbstractNamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    public Dish(String name, Integer price) {
+    public Dish(Integer id,String name, Integer price, LocalDate date) {
+        this.id=id;
         this.name = name;
         this.price = price;
+        this.date=date;
     }
 
     public Dish() {
     }
+
 
     public LocalDate getDate() {
         return date;

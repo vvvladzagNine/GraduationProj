@@ -23,6 +23,7 @@ public class RestaurantCrudRepo {
 
 
 
+
     public Restaurant save(Restaurant r) {
         return restaurantJpaRepo.save(r);
     }
@@ -44,6 +45,7 @@ public class RestaurantCrudRepo {
     public Restaurant getWithMenu(int id) {
         return restaurantJpaRepo.getWithMenu(id);
     }
+
 
 
     public Dish saveDish(Dish dish, int restId){

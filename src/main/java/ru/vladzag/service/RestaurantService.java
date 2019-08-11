@@ -8,6 +8,7 @@ import ru.vladzag.model.Restaurant;
 import ru.vladzag.repository.DishRepo;
 import ru.vladzag.repository.RestaurantCrudRepo;
 import ru.vladzag.repository.RestaurantJpaRepo;
+import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.restaurant.RestaurantUtil;
 
 import java.time.LocalDate;
@@ -30,14 +31,24 @@ public class RestaurantService {
         return restaurantCrudRepo.getWithMenu(id);
     }
 
+    public RestaurantTo getWithMenuInDate(int id, LocalDate date){
+        Restaurant r =restaurantCrudRepo.getWithMenu(id);
+        return RestaurantUtil.getWithFilteredDishes(r,date);
+    }
+
     public Restaurant save(Restaurant r){
         return restaurantCrudRepo.save(r);
     }
 
+    public List<Restaurant> getAll(){
+        return restaurantCrudRepo.getAll();
+    }
+
+    /*
     public List<Restaurant> getAllInDate(LocalDate date){
         List<Restaurant> restaurants = restaurantCrudRepo.getAll();
         return RestaurantUtil.getInDate(restaurants,date);
-    }
+    }*/
 
     public void updateDish(Dish meal, int resId) {
         Assert.notNull(meal, "meal must not be null");

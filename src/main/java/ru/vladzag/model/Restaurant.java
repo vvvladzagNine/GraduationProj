@@ -4,6 +4,7 @@ import org.hibernate.annotations.Columns;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,10 @@ public class Restaurant extends AbstractNamedEntity {
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    private List<Dish> dishes;
+    private List<Dish> dishes= new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "elected")
-    private List<Vote> votes;
+    private List<Vote> votes = new ArrayList<>();
 
 
     public List<Dish> getDishes() {
