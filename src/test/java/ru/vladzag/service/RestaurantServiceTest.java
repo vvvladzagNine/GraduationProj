@@ -21,6 +21,7 @@ import static ru.vladzag.RestaurantTestData.*;
         "classpath:spring/spring-db.xml"
 })
 @ExtendWith(SpringExtension.class)
+@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 class RestaurantServiceTest {
 
     @Autowired
@@ -61,23 +62,41 @@ class RestaurantServiceTest {
 
     @Test
     void save() {
-
+        Restaurant r = getResToSave();
+        service.save(r);
+        assertThat(service.getAll()).containsExactlyInAnyOrder(RES1,RES2,RES3,RESWITHMEALS,RES_SAVED);
     }
 
     @Test
     void delete() {
+        service.delete(RESWM_ID);
+        assertThat(service.getAll()).containsExactlyInAnyOrder(RES1,RES2,RES3);
     }
 
-    @Test
-    void updateDish() {
-    }
+
 
     @Test
     void createDish() {
+        service.createDish(getDishToSave(),RES1_ID);
+        Restaurant rest = service.getWithMenu(RES1_ID);
+        List<Dish> dishes=rest.getDishes();
+        assertThat(dishes).containsExactlyInAnyOrder(DISH_TO_SAVE);
+
     }
 
     @Test
     void deleteDish() {
+        service.deleteDish(DISH_ID);
+        Restaurant rest = service.getWithMenu(RESWM_ID);
+        assertThat(rest.getDishes()).containsExactlyInAnyOrder(DISH_2);
+    }
+
+    @Test
+    void updateDish() {
+        service.updateDish(DISH_2_UPDATED,RESWM_ID);
+        Restaurant r = service.getWithMenu(RESWM_ID);
+        assertThat(r.getDishes()).containsExactlyInAnyOrder(DISH_2_UPDATED,DISH_1);
+
     }
 
 

@@ -19,6 +19,10 @@ public class Restaurant extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "elected")
     private List<Vote> votes = new ArrayList<>();
 
+    public Restaurant(String rts) {
+        name = rts;
+    }
+
 
     public List<Dish> getDishes() {
         return dishes;
