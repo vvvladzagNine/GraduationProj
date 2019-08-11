@@ -50,9 +50,9 @@ public class RestaurantService {
         return RestaurantUtil.getInDate(restaurants,date);
     }*/
 
-    public void updateDish(Dish meal, int resId) {
-        Assert.notNull(meal, "meal must not be null");
-        checkNotFoundWithId(restaurantCrudRepo.saveDish(meal, resId), meal.getId());
+    public void updateDish(Dish dish, int resId) {
+        Assert.notNull(dish, "meal must not be null");
+        checkNotFoundWithId(restaurantCrudRepo.saveDish(dish, resId), dish.getId());
     }
 
     public Dish createDish(Dish meal, int resId) {

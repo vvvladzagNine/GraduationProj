@@ -23,6 +23,9 @@ public class RestaurantCrudRepo {
 
 
 
+    public Dish getDish(int id){
+        return dishRepo.findById(id).orElse(null);
+    }
 
     public Restaurant save(Restaurant r) {
         return restaurantJpaRepo.save(r);
@@ -49,7 +52,7 @@ public class RestaurantCrudRepo {
 
 
     public Dish saveDish(Dish dish, int restId){
-        if (!dish.isNew() && get(dish.getId()) == null) {
+        if (!dish.isNew() && getDish(dish.getId()) == null) {
             return null;
         }
         dish.setRestaurant(restaurantJpaRepo.getOne(restId));
