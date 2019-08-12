@@ -17,18 +17,49 @@ public class Vote extends AbstractBaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    User voter;
+    private User voter;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "res_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    Restaurant elected;
+    private Restaurant elected;
 
     @Column(name = "date", nullable = false)
     @NotNull
     private LocalDate date = LocalDate.now();
 
+    public Vote() {
+    }
 
+    public Vote(Integer id,User voter,Restaurant elected, LocalDate date) {
+        this.id=id;
+        this.voter = voter;
+        this.elected = elected;
+        this.date = date;
+    }
 
+    public User getVoter() {
+        return voter;
+    }
+
+    public void setVoter(User voter) {
+        this.voter = voter;
+    }
+
+    public Restaurant getElected() {
+        return elected;
+    }
+
+    public void setElected(Restaurant elected) {
+        this.elected = elected;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

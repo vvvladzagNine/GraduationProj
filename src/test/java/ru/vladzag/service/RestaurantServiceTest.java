@@ -73,8 +73,6 @@ class RestaurantServiceTest {
         assertThat(service.getAll()).containsExactlyInAnyOrder(RES1,RES2,RES3);
     }
 
-
-
     @Test
     void createDish() {
         service.createDish(getDishToSave(),RES1_ID);

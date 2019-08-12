@@ -16,6 +16,12 @@ public class VoteCrudRepo {
     @Autowired
     VoteRepo voteRepo;
 
+    @Autowired
+    RestaurantJpaRepo resRep;
+
+    @Autowired
+    CrudUserRepository userRep;
+
 
     public Vote get(int id) {
         return voteRepo.findById(id).orElse(null);
@@ -25,14 +31,16 @@ public class VoteCrudRepo {
         return voteRepo.getInDate(date);
     }
 
-    boolean delete(int id){
+    public boolean delete(int id){
         return voteRepo.delete(id)!=0;
     }
 
-    public Vote save(Vote vote, int id){
+    public Vote save(Vote vote, int userId, int resId ){
         if (!vote.isNew() && get(vote.getId()) == null) {
             return null;
         }
+        vote.setElected(resRep.getOne(resId));
+        vote.setVoter(userRep.getOne(userId));
         return voteRepo.save(vote);
     }
 
