@@ -48,6 +48,10 @@ public class RestaurantCrudRepo {
     public Restaurant getWithMenu(int id) {
         return restaurantJpaRepo.getWithMenu(id);
     }
+    public Restaurant getWithMenuAndVotes(int id) {
+        return restaurantJpaRepo.getWithMenuAndVotes(id);
+    }
+
 
 
 

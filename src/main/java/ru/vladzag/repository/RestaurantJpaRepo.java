@@ -26,6 +26,10 @@ public interface RestaurantJpaRepo extends JpaRepository<Restaurant,Integer> {
     @Query("SELECT r FROM Restaurant r WHERE r.id=?1")
     Restaurant getWithMenu(int id);
 
+    @EntityGraph(attributePaths = {"dishes","votes"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r WHERE r.id=?1")
+    Restaurant getWithMenuAndVotes(int id);
+
 
 
 

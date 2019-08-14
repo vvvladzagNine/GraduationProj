@@ -12,6 +12,7 @@ import ru.vladzag.model.Restaurant;
 import ru.vladzag.to.RestaurantTo;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.vladzag.RestaurantTestData.*;
@@ -38,8 +39,8 @@ class RestaurantServiceTest {
         Restaurant rest = service.getWithMenu(RESWM_ID);
         Restaurant rest2=getWithDish();
         assertThat(rest).isEqualToIgnoringGivenFields(rest2, "votes","dishes");
-        List<Dish> l1=rest.getDishes();
-        List<Dish> l2=rest2.getDishes();
+        Set<Dish> l1=rest.getDishes();
+        Set<Dish> l2=rest2.getDishes();
         assertThat(l1).containsExactlyElementsOf(l2);
 
     }
@@ -47,6 +48,17 @@ class RestaurantServiceTest {
     @Test
     void getWithMenuInDate() {
         RestaurantTo rest = service.getWithMenuInDate(RESWM_ID,CURRENT_DATE);
+        RestaurantTo rest2= getToWithDishInDate();
+        assertThat(rest).isEqualToIgnoringGivenFields(rest2,"dishes","countOfVotes");
+        List<Dish> l1=rest.getDishes();
+        List<Dish> l2=rest2.getDishes();
+        assertThat(l1).containsExactlyElementsOf(l2);
+    }
+
+
+    @Test
+    void getWithMenuInDateAndVotes() {
+        RestaurantTo rest = service.getWithMenuInDateAndVotes(RESWM_ID,CURRENT_DATE);
         RestaurantTo rest2= getToWithDishInDate();
         assertThat(rest).isEqualToIgnoringGivenFields(rest2,"dishes");
         List<Dish> l1=rest.getDishes();
@@ -63,7 +75,7 @@ class RestaurantServiceTest {
     @Test
     void save() {
         Restaurant r = getResToSave();
-        service.save(r);
+        service.create(r);
         assertThat(service.getAll()).containsExactlyInAnyOrder(RES1,RES2,RES3,RESWITHMEALS,RES_SAVED);
     }
 
@@ -77,7 +89,7 @@ class RestaurantServiceTest {
     void createDish() {
         service.createDish(getDishToSave(),RES1_ID);
         Restaurant rest = service.getWithMenu(RES1_ID);
-        List<Dish> dishes=rest.getDishes();
+        Set<Dish> dishes=rest.getDishes();
         assertThat(dishes).containsExactlyInAnyOrder(DISH_TO_SAVE);
 
     }

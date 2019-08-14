@@ -12,15 +12,21 @@ public class RestaurantTo {
 
     private String name;
 
+    private int countOfVotes;
 
-
-    //private int countOfVotes;
-
+    //TODO make dishTo
     private List<Dish> dishes = new ArrayList<>();
 
     public RestaurantTo(Integer id, String name) {
         this.id = id;
         this.name = name;
+
+    }
+
+    public RestaurantTo(Integer id, String name,int votes) {
+        this.id = id;
+        this.name = name;
+        this.countOfVotes=votes;
 
     }
 
@@ -43,7 +49,13 @@ public class RestaurantTo {
         this.name = name;
     }
 
+    public int getCountOfVotes() {
+        return countOfVotes;
+    }
 
+    public void setCountOfVotes(int countOfVotes) {
+        this.countOfVotes = countOfVotes;
+    }
 
     public List<Dish> getDishes() {
         return dishes;

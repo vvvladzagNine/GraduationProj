@@ -15,6 +15,8 @@ import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.vladzag.VoteTestData.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -28,11 +30,22 @@ class VoteServiceTest {
     VoteService service;
 
     @Test
-    void createVote() {
+    void createVote() throws VoteExpiredException {
         Vote v = new Vote();
         v.setDate(LocalDate.now());
         service.createVote(v,100000,100002);
         assertThat(service.get(100008)).isEqualToIgnoringGivenFields(VOTE1);
+    }
+
+    @Test
+    void createTwice() throws VoteExpiredException {
+        Vote v = new Vote();
+        v.setDate(LocalDate.now());
+        service.createVote(v,100000,100002);
+        assertThat(service.get(100008)).isEqualToIgnoringGivenFields(VOTE1);
+        Vote v2 = new Vote();
+        v.setDate(LocalDate.now());
+        assertThrows(VoteExpiredException.class,()->service.createVote(v,100000,100003));
     }
 
     @Test

@@ -44,4 +44,8 @@ public class VoteCrudRepo {
         return voteRepo.save(vote);
     }
 
+    public Vote gerInDateByUser(LocalDate date,int userId){
+        return voteRepo.getInDateByUser(date,userId);
+    }
+
 }

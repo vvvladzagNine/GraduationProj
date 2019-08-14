@@ -1,7 +1,9 @@
 package ru.vladzag.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
@@ -36,9 +38,29 @@ public class RestaurantService {
         return RestaurantUtil.getWithFilteredDishes(r,date);
     }
 
-    public Restaurant save(Restaurant r){
+    public RestaurantTo getWithMenuInDateAndVotes(int id, LocalDate date){
+        Restaurant r =restaurantCrudRepo.getWithMenuAndVotes(id);
+        return RestaurantUtil.getWithFilteredDishesAndCountOfVotes(r,date);
+    }
+
+
+    public void update(Restaurant r) {
+        Assert.notNull(r, "user must not be null");
+//      checkNotFoundWithId : check works only for JDBC, disabled
+        restaurantCrudRepo.save(r);
+    }
+
+
+    public Restaurant create(Restaurant r) {
+        Assert.notNull(r, "user must not be null");
         return restaurantCrudRepo.save(r);
     }
+
+
+
+
+
+
 
     public List<Restaurant> getAll(){
         return restaurantCrudRepo.getAll();

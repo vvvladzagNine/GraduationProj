@@ -17,6 +17,10 @@ INSERT INTO res_dishes(name,price,date,res_id) VALUES
                                                       ('D',100,'2015-05-30',100005),
                                                       ('D2',200,'2015-05-29',100005);
 
+INSERT INTO votes(res_id,date,user_id) VALUES
+(100005,'2015-05-30',100000),
+(100005,'2015-05-30',100001);
+
 
 
 

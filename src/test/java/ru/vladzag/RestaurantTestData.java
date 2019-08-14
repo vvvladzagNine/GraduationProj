@@ -18,8 +18,8 @@ public class RestaurantTestData {
     public static final int RESWM_ID = START_SEQ + 5;
     public static final int DISH_ID = START_SEQ + 6;
     public static final int DISH2_ID = START_SEQ + 7;
-    public static final int RES_SAVED_ID = START_SEQ + 8;
-    public static final int DISH_TO_SAVE_ID = START_SEQ + 8;
+    public static final int RES_SAVED_ID = START_SEQ + 10;
+    public static final int DISH_TO_SAVE_ID = START_SEQ + 10;
     public static final LocalDate CURRENT_DATE = LocalDate.of(2015, Month.MAY, 30);
 
 
@@ -43,6 +43,7 @@ public class RestaurantTestData {
     }
     public static RestaurantTo getToWithDishInDate(){
         RestaurantTo r = new RestaurantTo(RESWM_ID,"RWM");
+        r.setCountOfVotes(2);
         r.getDishes().add(new Dish(DISH_ID,"D",100, LocalDate.of(2015, Month.MAY, 30)));
         return r;
     }

@@ -22,4 +22,15 @@ public class RestaurantUtil {
 
         return rTo;
     }
+
+    public static RestaurantTo getWithFilteredDishesAndCountOfVotes(Restaurant r,LocalDate date){
+        RestaurantTo rTo = new RestaurantTo(r.getId(),r.getName());
+        rTo.setDishes(r.getDishes()
+                .stream()
+                .filter(dish -> dish.getDate().equals(date))
+                .collect(Collectors.toList()));
+        rTo.setCountOfVotes((int)r.getVotes().stream().filter(vote -> vote.getDate().equals(date)).count());
+
+        return rTo;
+    }
 }

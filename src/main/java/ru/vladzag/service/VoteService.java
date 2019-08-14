@@ -36,10 +36,12 @@ public class VoteService {
 
 
 
-    public Vote createVote(Vote vote,int userId, int resId) {
+    public Vote createVote (Vote vote,int userId, int resId) throws VoteExpiredException{
         Assert.notNull(vote, "meal must not be null");
         LocalDate dateOfVote = vote.getDate();
         LocalDateTime now = LocalDateTime.now();
+        Vote v = voteCrudRepo.gerInDateByUser(now.toLocalDate(),userId);
+        if(v!=null) throw new VoteExpiredException("User already voted today");
         if(now.toLocalDate().equals(dateOfVote)) {
             return voteCrudRepo.save(vote, userId, resId);
         }

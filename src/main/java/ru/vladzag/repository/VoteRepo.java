@@ -24,5 +24,9 @@ public interface VoteRepo extends JpaRepository<Vote,Integer> {
     @Query("SELECT m from Vote m WHERE  m.date=:date")
     List<Vote> getInDate(@Param("date") LocalDate date);
 
+    //@SuppressWarnings("JpaQlInspection")
+    @Query("SELECT m from Vote m WHERE  m.date=:date AND m.voter.id=:userId")
+    Vote getInDateByUser(@Param("date") LocalDate date,@Param("userId") int userId);
+
 
 }
