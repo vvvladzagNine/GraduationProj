@@ -1,6 +1,7 @@
 package ru.vladzag.util.restaurant;
 
 import ru.vladzag.model.Restaurant;
+import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class RestaurantUtil {
         rTo.setDishes(r.getDishes()
                 .stream()
                 .filter(dish -> dish.getDate().equals(date))
+                .map(dish -> new DishTo(dish.getId(),dish.getName(),dish.getPrice()))
                 .collect(Collectors.toList()));
 
         return rTo;
@@ -28,9 +30,27 @@ public class RestaurantUtil {
         rTo.setDishes(r.getDishes()
                 .stream()
                 .filter(dish -> dish.getDate().equals(date))
+                .map(dish -> new DishTo(dish.getId(),dish.getName(),dish.getPrice()))
                 .collect(Collectors.toList()));
         rTo.setCountOfVotes((int)r.getVotes().stream().filter(vote -> vote.getDate().equals(date)).count());
 
         return rTo;
+    }
+
+    public static RestaurantTo getWithFilteredCountOfVotes(Restaurant r,LocalDate date){
+        RestaurantTo rTo = new RestaurantTo(r.getId(),r.getName());
+        rTo.setCountOfVotes((int)r.getVotes().stream().filter(vote -> vote.getDate().equals(date)).count());
+        return rTo;
+    }
+
+    public static List<RestaurantTo> getAllWithFilteredCountOfVotes(List<Restaurant> list,LocalDate date){
+        return list.stream()
+                .map(r ->{
+                    RestaurantTo rTo = new RestaurantTo(r.getId(),r.getName());
+                    rTo.setCountOfVotes((int)r.getVotes().stream().filter(vote -> vote.getDate().equals(date)).count());
+                    return rTo; })
+                .collect(Collectors.toList());
+
+
     }
 }

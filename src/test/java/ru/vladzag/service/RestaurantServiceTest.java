@@ -9,6 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
+import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 
 import java.util.List;
@@ -50,8 +51,8 @@ class RestaurantServiceTest {
         RestaurantTo rest = service.getWithMenuInDate(RESWM_ID,CURRENT_DATE);
         RestaurantTo rest2= getToWithDishInDate();
         assertThat(rest).isEqualToIgnoringGivenFields(rest2,"dishes","countOfVotes");
-        List<Dish> l1=rest.getDishes();
-        List<Dish> l2=rest2.getDishes();
+        List<DishTo> l1=rest.getDishes();
+        List<DishTo> l2=rest2.getDishes();
         assertThat(l1).containsExactlyElementsOf(l2);
     }
 
@@ -61,8 +62,8 @@ class RestaurantServiceTest {
         RestaurantTo rest = service.getWithMenuInDateAndVotes(RESWM_ID,CURRENT_DATE);
         RestaurantTo rest2= getToWithDishInDate();
         assertThat(rest).isEqualToIgnoringGivenFields(rest2,"dishes");
-        List<Dish> l1=rest.getDishes();
-        List<Dish> l2=rest2.getDishes();
+        List<DishTo> l1=rest.getDishes();
+        List<DishTo> l2=rest2.getDishes();
         assertThat(l1).containsExactlyElementsOf(l2);
     }
 
@@ -110,6 +111,19 @@ class RestaurantServiceTest {
     }
 
 
+    @Test
+    void getWithVotes() {
+        RestaurantTo rTo =service.getWithVotes(RESWM_ID,CURRENT_DATE);
+        assertThat(rTo).isEqualToIgnoringGivenFields(getToWithDishInDate(),"dishes");
 
+
+    }
+
+    @Test
+    void getAllWithVotes() {
+        List<RestaurantTo> listTo = service.getAllWithVotes(CURRENT_DATE);
+        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(getToWithDishInDate(),RES3_TO,RES2_TO,RES1_TO));
+
+    }
 }
 

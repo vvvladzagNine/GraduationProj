@@ -51,7 +51,9 @@ public class RestaurantCrudRepo {
     public Restaurant getWithMenuAndVotes(int id) {
         return restaurantJpaRepo.getWithMenuAndVotes(id);
     }
+    public Restaurant getWithVotes(int id){return restaurantJpaRepo.getWithVotes(id);}
 
+    public List<Restaurant> getAllWithVotes(){return restaurantJpaRepo.getAllWithVotes();}
 
 
 

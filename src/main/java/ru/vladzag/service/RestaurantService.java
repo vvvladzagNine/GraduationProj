@@ -44,6 +44,21 @@ public class RestaurantService {
     }
 
 
+    //TODO write tests
+    public RestaurantTo getWithVotes(int id, LocalDate date){
+        Restaurant r = restaurantCrudRepo.getWithVotes(id);
+        return RestaurantUtil.getWithFilteredCountOfVotes(r,date);
+    }
+
+    public List<RestaurantTo> getAllWithVotes(LocalDate date){
+        List<Restaurant> list = restaurantCrudRepo.getAllWithVotes();
+        return RestaurantUtil.getAllWithFilteredCountOfVotes(list,date);
+    }
+
+
+
+
+
     public void update(Restaurant r) {
         Assert.notNull(r, "user must not be null");
 //      checkNotFoundWithId : check works only for JDBC, disabled

@@ -15,7 +15,7 @@ public class RestaurantTo {
     private int countOfVotes;
 
     //TODO make dishTo
-    private List<Dish> dishes = new ArrayList<>();
+    private List<DishTo> dishes = new ArrayList<>();
 
     public RestaurantTo(Integer id, String name) {
         this.id = id;
@@ -57,11 +57,11 @@ public class RestaurantTo {
         this.countOfVotes = countOfVotes;
     }
 
-    public List<Dish> getDishes() {
+    public List<DishTo> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<Dish> dishes) {
+    public void setDishes(List<DishTo> dishes) {
         this.dishes = dishes;
     }
 
@@ -70,7 +70,7 @@ public class RestaurantTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RestaurantTo that = (RestaurantTo) o;
-        return name == that.name &&
+        return name.equals(that.name) &&
                 Objects.equals(id, that.id);
     }
 
@@ -81,7 +81,7 @@ public class RestaurantTo {
 
     @Override
     public String toString() {
-        return "MealTo{" +
+        return "RestaurantTo{" +
                 "id=" + id +
                 ", name=" + name +
                 '}';

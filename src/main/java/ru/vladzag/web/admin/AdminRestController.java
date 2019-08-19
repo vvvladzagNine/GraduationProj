@@ -94,8 +94,8 @@ public class AdminRestController {
 
     @DeleteMapping("/{resId}/dishes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id,
-                       @PathVariable int resI) {
+    public void deleteDish(@PathVariable int id,
+                       @PathVariable int resId) {
         service.deleteDish(id);
     }
 

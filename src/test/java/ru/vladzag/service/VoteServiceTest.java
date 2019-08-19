@@ -34,7 +34,7 @@ class VoteServiceTest {
         Vote v = new Vote();
         v.setDate(LocalDate.now());
         service.createVote(v,100000,100002);
-        assertThat(service.get(100008)).isEqualToIgnoringGivenFields(VOTE1);
+        assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1);
     }
 
     @Test
@@ -42,7 +42,7 @@ class VoteServiceTest {
         Vote v = new Vote();
         v.setDate(LocalDate.now());
         service.createVote(v,100000,100002);
-        assertThat(service.get(100008)).isEqualToIgnoringGivenFields(VOTE1);
+        assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1);
         Vote v2 = new Vote();
         v.setDate(LocalDate.now());
         assertThrows(VoteExpiredException.class,()->service.createVote(v,100000,100003));
@@ -54,19 +54,19 @@ class VoteServiceTest {
         v.setDate(LocalDate.now());
         service.createVote(v,100000,100002);
         try {
-            service.updateVote(service.get(100008),100000,100003);
+            service.updateVote(service.get(100010),100000,100003);
 
             if(LocalTime.now().isAfter(LocalTime.of(11,0))){
                 throw new VoteExpiredException("User is available to change his mind after 11am !");
             }
-            assertThat(service.get(100008)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
+            assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
 
         }
         catch (VoteExpiredException e){
             if(LocalTime.now().isBefore(LocalTime.of(11,0))){
                 throw new VoteExpiredException("User is not available to change his mind before 11am !");
             }
-            assertThat(service.get(100008)).isEqualToIgnoringGivenFields(VOTE1);
+            assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1);
 
         }
 

@@ -2,6 +2,7 @@ package ru.vladzag;
 
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
+import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 
 import java.time.LocalDate;
@@ -23,30 +24,37 @@ public class RestaurantTestData {
     public static final LocalDate CURRENT_DATE = LocalDate.of(2015, Month.MAY, 30);
 
 
+    public static final RestaurantTo RES1_TO = new RestaurantTo(RES1_ID,"R1",0);
+    public static final RestaurantTo RES2_TO = new RestaurantTo(RES2_ID,"R2",0);
+    public static final RestaurantTo RES3_TO = new RestaurantTo(RES3_ID,"R3",0);
+
+
 
     public static final Restaurant RES1 = new Restaurant(RES1_ID,"R1");
     public static final Restaurant RES2 = new Restaurant(RES2_ID,"R2");
     public static final Restaurant RES3 = new Restaurant(RES3_ID,"R3");
     public static final Restaurant RESWITHMEALS = new Restaurant(RESWM_ID,"RWM");
     public static final Restaurant RES_SAVED = new Restaurant(RES_SAVED_ID,"RTS");
-    public static final Dish DISH_2 = new Dish(DISH2_ID,"D2",200, LocalDate.of(2015, Month.MAY, 29));
-    public static final Dish DISH_1 = new Dish(DISH_ID,"D",100, LocalDate.of(2015, Month.MAY, 30));
+    public static final Dish DISH_2 = new Dish(DISH2_ID,"Cake",200, LocalDate.of(2015, Month.MAY, 29));
+    public static final Dish DISH_1 = new Dish(DISH_ID,"Pizza",100, LocalDate.of(2015, Month.MAY, 30));
     public static final Dish DISH_2_UPDATED = new Dish(DISH2_ID,"D2U",250, LocalDate.of(2015, Month.MAY, 29));
 
     public static final Dish DISH_TO_SAVE = new Dish(DISH_TO_SAVE_ID,"DTS",120,LocalDate.of(2015, Month.MAY, 25));
 
     public static Restaurant getWithDish(){
         Restaurant r = new Restaurant(RESWM_ID,"RWM");;
-        r.getDishes().add(new Dish(DISH_ID,"D",100, LocalDate.of(2015, Month.MAY, 30)));
-        r.getDishes().add(new Dish(DISH2_ID,"D2",200, LocalDate.of(2015, Month.MAY, 29)));
+        r.getDishes().add(new Dish(DISH_ID,"Pizza",100, LocalDate.of(2015, Month.MAY, 30)));
+        r.getDishes().add(new Dish(DISH2_ID,"Cake",200, LocalDate.of(2015, Month.MAY, 29)));
         return r;
     }
     public static RestaurantTo getToWithDishInDate(){
         RestaurantTo r = new RestaurantTo(RESWM_ID,"RWM");
         r.setCountOfVotes(2);
-        r.getDishes().add(new Dish(DISH_ID,"D",100, LocalDate.of(2015, Month.MAY, 30)));
+        r.getDishes().add(new DishTo(DISH_ID,"Pizza",100));
         return r;
     }
+
+
 
     public static Restaurant getResToSave(){
         return new Restaurant("RTS");
