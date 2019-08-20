@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.vladzag.model.Vote;
+import ru.vladzag.repository.CrudUserRepository;
+import ru.vladzag.repository.RestaurantJpaRepo;
 import ru.vladzag.repository.VoteCrudRepo;
 import ru.vladzag.util.exception.VoteExpiredException;
 
@@ -19,33 +21,45 @@ public class VoteService {
     @Autowired
     VoteCrudRepo voteCrudRepo;
 
+    @Autowired
+    CrudUserRepository uRepo;
+
+    @Autowired
+    RestaurantJpaRepo rRepo;
+
     public Vote get(int id){
         return voteCrudRepo.get(id);
     }
 
-    public void updateVote(Vote vote,int userId, int resId) throws VoteExpiredException {
-        Assert.notNull(vote, "vote must not be null");
-        LocalDate dateOfVote = vote.getDate();
+    public void updateVote(int voteId, int userId,int resId) throws VoteExpiredException {
+        //Assert.notNull(vote, "vote must not be null");
+        //LocalDate dateOfVote = vote.getDate();
+        Vote v = voteCrudRepo.get(voteId);
+        LocalDate dateOfVote = v.getDate();
         LocalDateTime now = LocalDateTime.now();
-        if(now.toLocalDate().equals(dateOfVote) && now.toLocalTime().isBefore(LocalTime.of(11,0))){
-            checkNotFoundWithId(voteCrudRepo.save(vote,userId,resId), vote.getId());
-        }else throw new VoteExpiredException("Now is "+now.toLocalTime()+", it is too late to vote after 11am");
+        if(
+                v.getVoter().getId() == userId &&
+                now.toLocalDate().equals(dateOfVote) &&
+                now.toLocalTime().isBefore(LocalTime.of(11,0)))
+        {
+            checkNotFoundWithId(voteCrudRepo.update(v,resId), v.getId());
+        }else throw new VoteExpiredException("Now is " + now.toLocalTime()+", it is too late to vote ");
 
 
     }
 
+    public Vote createVote (int userId, int resId) throws VoteExpiredException{
 
-
-    public Vote createVote (Vote vote,int userId, int resId) throws VoteExpiredException{
-        Assert.notNull(vote, "meal must not be null");
-        LocalDate dateOfVote = vote.getDate();
         LocalDateTime now = LocalDateTime.now();
-        Vote v = voteCrudRepo.gerInDateByUser(now.toLocalDate(),userId);
-        if(v!=null) throw new VoteExpiredException("User already voted today");
-        if(now.toLocalDate().equals(dateOfVote)) {
-            return voteCrudRepo.save(vote, userId, resId);
+        Vote v = new Vote();
+
+        Vote v2 = voteCrudRepo.gerInDateByUser(now.toLocalDate(),userId);
+        if(v2!=null) throw new VoteExpiredException("User has already voted today");
+        {
+            v.setDate(now.toLocalDate());
+            return voteCrudRepo.save(v, userId, resId);
         }
-        return null;
+
     }
 
 }

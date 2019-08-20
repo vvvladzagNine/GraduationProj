@@ -16,6 +16,8 @@ import java.time.LocalTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.vladzag.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.vladzag.RestaurantTestData.*;
+import static ru.vladzag.UserTestData.*;
 
 
 @SpringJUnitConfig(locations = {
@@ -33,40 +35,40 @@ class VoteServiceTest {
     void createVote() throws VoteExpiredException {
         Vote v = new Vote();
         v.setDate(LocalDate.now());
-        service.createVote(v,100000,100002);
-        assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1);
+        service.createVote(USER_ID,RES1_ID);
+        assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1);
     }
 
     @Test
     void createTwice() throws VoteExpiredException {
         Vote v = new Vote();
         v.setDate(LocalDate.now());
-        service.createVote(v,100000,100002);
-        assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1);
+        service.createVote(USER_ID,RES1_ID);
+        assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1);
         Vote v2 = new Vote();
         v.setDate(LocalDate.now());
-        assertThrows(VoteExpiredException.class,()->service.createVote(v,100000,100003));
+        assertThrows(VoteExpiredException.class,()->service.createVote(USER_ID,RES2_ID));
     }
 
     @Test
     void updateVote() throws VoteExpiredException {
         Vote v = new Vote();
         v.setDate(LocalDate.now());
-        service.createVote(v,100000,100002);
+        service.createVote(USER_ID,RES1_ID);
         try {
-            service.updateVote(service.get(100010),100000,100003);
+            service.updateVote(VOTE1_ID,USER_ID,RES2_ID);
 
             if(LocalTime.now().isAfter(LocalTime.of(11,0))){
                 throw new VoteExpiredException("User is available to change his mind after 11am !");
             }
-            assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
+            assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
 
         }
         catch (VoteExpiredException e){
             if(LocalTime.now().isBefore(LocalTime.of(11,0))){
                 throw new VoteExpiredException("User is not available to change his mind before 11am !");
             }
-            assertThat(service.get(100010)).isEqualToIgnoringGivenFields(VOTE1);
+            assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1);
 
         }
 

@@ -35,8 +35,18 @@ public class VoteCrudRepo {
         return voteRepo.delete(id)!=0;
     }
 
+
+    public Vote update(Vote vote, int resId ){
+        if (vote.isNew()) {
+            return null;
+        }
+        vote.setElected(resRep.getOne(resId));
+        //vote.setVoter(userRep.getOne(userId));
+        return voteRepo.save(vote);
+    }
+
     public Vote save(Vote vote, int userId, int resId ){
-        if (!vote.isNew() && get(vote.getId()) == null) {
+        if (!vote.isNew()) {
             return null;
         }
         vote.setElected(resRep.getOne(resId));

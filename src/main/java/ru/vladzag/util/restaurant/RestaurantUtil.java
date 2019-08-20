@@ -53,4 +53,15 @@ public class RestaurantUtil {
 
 
     }
+
+    public static List<RestaurantTo> getAllWithFilteredCountOfVotesInAllTime(List<Restaurant> list){
+        return list.stream()
+                .map(r ->{
+                    RestaurantTo rTo = new RestaurantTo(r.getId(),r.getName());
+                    rTo.setCountOfVotes(r.getVotes().size());
+                    return rTo; })
+                .collect(Collectors.toList());
+
+
+    }
 }

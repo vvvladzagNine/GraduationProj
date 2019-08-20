@@ -12,11 +12,13 @@ import ru.vladzag.model.Restaurant;
 import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.vladzag.RestaurantTestData.*;
+import static ru.vladzag.UserTestData.*;
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -28,6 +30,11 @@ class RestaurantServiceTest {
 
     @Autowired
     RestaurantService service;
+
+    @Autowired
+    VoteService vService;
+
+
 
     @Test
     void get() {
@@ -48,7 +55,7 @@ class RestaurantServiceTest {
 
     @Test
     void getWithMenuInDate() {
-        RestaurantTo rest = service.getWithMenuInDate(RESWM_ID,CURRENT_DATE);
+        RestaurantTo rest = service.getWithMenuInDate(RESWM_ID, DATE_2015_05_30);
         RestaurantTo rest2= getToWithDishInDate();
         assertThat(rest).isEqualToIgnoringGivenFields(rest2,"dishes","countOfVotes");
         List<DishTo> l1=rest.getDishes();
@@ -59,7 +66,7 @@ class RestaurantServiceTest {
 
     @Test
     void getWithMenuInDateAndVotes() {
-        RestaurantTo rest = service.getWithMenuInDateAndVotes(RESWM_ID,CURRENT_DATE);
+        RestaurantTo rest = service.getWithMenuAndVotesInDate(RESWM_ID, DATE_2015_05_30);
         RestaurantTo rest2= getToWithDishInDate();
         assertThat(rest).isEqualToIgnoringGivenFields(rest2,"dishes");
         List<DishTo> l1=rest.getDishes();
@@ -113,7 +120,7 @@ class RestaurantServiceTest {
 
     @Test
     void getWithVotes() {
-        RestaurantTo rTo =service.getWithVotes(RESWM_ID,CURRENT_DATE);
+        RestaurantTo rTo =service.getWithVotes(RESWM_ID, DATE_2015_05_30);
         assertThat(rTo).isEqualToIgnoringGivenFields(getToWithDishInDate(),"dishes");
 
 
@@ -121,8 +128,29 @@ class RestaurantServiceTest {
 
     @Test
     void getAllWithVotes() {
-        List<RestaurantTo> listTo = service.getAllWithVotes(CURRENT_DATE);
+        List<RestaurantTo> listTo = service.getAllWithVotes(DATE_2015_05_30);
         assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(getToWithDishInDate(),RES3_TO,RES2_TO,RES1_TO));
+
+    }
+
+    @Test
+    void getScoreForUser() throws Exception {
+        vService.createVote(USER_ID,RES1_ID);
+        List<RestaurantTo> listTo = service.getScoreForUser(USER_ID);
+        if(LocalTime.now().isAfter(LocalTime.of(11,0)))
+            assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(RESWM_TO,RES1_TO_WITH_VOTE,RES3_TO,RES2_TO));
+        else
+            assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(null);
+
+
+    }
+    @Test
+    void getScoreForUserWithoutVoting() {
+
+        List<RestaurantTo> listTo = service.getScoreForUser(USER_ID);
+        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(null);
+
+
 
     }
 }

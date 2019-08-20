@@ -8,14 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
-import ru.vladzag.model.User;
 import ru.vladzag.service.RestaurantService;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.DateTimeUtil;
-import ru.vladzag.web.user.AbstractUserController;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 import static ru.vladzag.util.ValidationUtil.assureIdConsistent;
@@ -38,9 +35,20 @@ public class AdminRestController {
         return service.getAll();
     }
 
+    @GetMapping("/history")
+    public List<RestaurantTo> getAllHistory(@RequestParam(required = false) String date) {
+        //log.info("getAll");
+        if(date==null) {
+            return service.getAllTo();
+        }
+        else {
+            return service.getAllWithVotes( DateTimeUtil.parseLocalDate(date));
+        }
+    }
+
     @GetMapping("/{id}")
     public RestaurantTo get(@PathVariable int id, @RequestParam String date) {
-        return service.getWithMenuInDateAndVotes(id, DateTimeUtil.parseLocalDate(date));
+        return service.getWithMenuAndVotesInDate(id, DateTimeUtil.parseLocalDate(date));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -7,13 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
-import ru.vladzag.repository.DishRepo;
-import ru.vladzag.repository.RestaurantCrudRepo;
-import ru.vladzag.repository.RestaurantJpaRepo;
+import ru.vladzag.repository.*;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.restaurant.RestaurantUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -24,6 +24,12 @@ public class RestaurantService {
 
     @Autowired
     RestaurantCrudRepo restaurantCrudRepo;
+
+    @Autowired
+    DataJpaUserRepository uRepo;
+
+    @Autowired
+    VoteCrudRepo vRepo;
 
     public Restaurant get(int id){
        return restaurantCrudRepo.get(id);
@@ -38,13 +44,21 @@ public class RestaurantService {
         return RestaurantUtil.getWithFilteredDishes(r,date);
     }
 
-    public RestaurantTo getWithMenuInDateAndVotes(int id, LocalDate date){
+    public RestaurantTo getWithMenuAndVotesInDate(int id, LocalDate date){
         Restaurant r =restaurantCrudRepo.getWithMenuAndVotes(id);
         return RestaurantUtil.getWithFilteredDishesAndCountOfVotes(r,date);
     }
 
+    public List<RestaurantTo> getScoreForUser(int userId){
+        LocalDateTime now = LocalDateTime.now();
+        if(vRepo.gerInDateByUser(now.toLocalDate(),userId)!=null && now.toLocalTime().isAfter(LocalTime.of(11,0))){
+            return getAllWithVotes(now.toLocalDate());
+        }
+        else {
+            return null;
+        }
+    }
 
-    //TODO write tests
     public RestaurantTo getWithVotes(int id, LocalDate date){
         Restaurant r = restaurantCrudRepo.getWithVotes(id);
         return RestaurantUtil.getWithFilteredCountOfVotes(r,date);
@@ -54,10 +68,6 @@ public class RestaurantService {
         List<Restaurant> list = restaurantCrudRepo.getAllWithVotes();
         return RestaurantUtil.getAllWithFilteredCountOfVotes(list,date);
     }
-
-
-
-
 
     public void update(Restaurant r) {
         Assert.notNull(r, "user must not be null");
@@ -71,14 +81,11 @@ public class RestaurantService {
         return restaurantCrudRepo.save(r);
     }
 
-
-
-
-
-
-
     public List<Restaurant> getAll(){
         return restaurantCrudRepo.getAll();
+    }
+    public List<RestaurantTo> getAllTo(){
+        return RestaurantUtil.getAllWithFilteredCountOfVotesInAllTime(restaurantCrudRepo.getAllWithVotes());
     }
 
     /*

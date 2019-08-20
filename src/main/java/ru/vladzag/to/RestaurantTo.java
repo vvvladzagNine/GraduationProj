@@ -84,6 +84,7 @@ public class RestaurantTo {
         return "RestaurantTo{" +
                 "id=" + id +
                 ", name=" + name +
+                ", votes=" + countOfVotes +
                 '}';
     }
 }
