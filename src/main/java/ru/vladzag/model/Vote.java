@@ -2,6 +2,8 @@ package ru.vladzag.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
+import ru.vladzag.util.DateTimeUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,6 +29,7 @@ public class Vote extends AbstractBaseEntity {
 
     @Column(name = "date", nullable = false)
     @NotNull
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDate date = LocalDate.now();
 
     public Vote() {
@@ -62,5 +65,14 @@ public class Vote extends AbstractBaseEntity {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "voter=" + voter.getId() +
+                ", elected=" + elected.getId() +
+                ", date=" + date +
+                '}';
     }
 }

@@ -35,6 +35,8 @@ public class RestaurantService {
        return restaurantCrudRepo.get(id);
     }
 
+    public Dish getDish(int id){return restaurantCrudRepo.getDish(id);}
+
     public Restaurant getWithMenu(int id){
         return restaurantCrudRepo.getWithMenu(id);
     }
@@ -103,6 +105,8 @@ public class RestaurantService {
         Assert.notNull(meal, "meal must not be null");
         return restaurantCrudRepo.saveDish(meal, resId);
     }
+
+
 
     public void deleteDish(int dishId){
         checkNotFoundWithId(restaurantCrudRepo.deleteDish(dishId), dishId);

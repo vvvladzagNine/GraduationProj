@@ -50,17 +50,12 @@ public class AdminRestController {
     public RestaurantTo get(@PathVariable int id, @RequestParam String date) {
         return service.getWithMenuAndVotesInDate(id, DateTimeUtil.parseLocalDate(date));
     }
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant res) {
-       // log.info("create {}", user);
-        checkNew(res);
-        Restaurant created = service.create(res);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+    @GetMapping("/dishes/{id}")
+    public Dish get(@PathVariable int id) {
+        return service.getDish(id);
     }
+
+
 
 
     @DeleteMapping("/{id}")
@@ -78,15 +73,27 @@ public class AdminRestController {
     }
 
 
-    @PostMapping(value = "/{resId}/dishes/",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createDishWithLocation(
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant res) {
+        // log.info("create {}", user);
+        checkNew(res);
+        Restaurant created = service.create(res);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
+    }
+
+    @PostMapping(value = "/{resId}/dishes",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Dish> createDish(
             @RequestBody Dish d,
             @PathVariable int resId) {
         // log.info("create {}", user);
         checkNew(d);
         Dish created = service.createDish(d,resId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{resId}/dishes/{id}")
+                .path(REST_URL + "/dishes/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
@@ -107,12 +114,6 @@ public class AdminRestController {
         service.deleteDish(id);
     }
 
-    /*
-    @GetMapping("/by")
-    public User getByMail(@RequestParam String email) {
-        log.info("getByEmail {}", email);
-        return service.getByEmail(email);
-    }
-    */
+
 
 }
