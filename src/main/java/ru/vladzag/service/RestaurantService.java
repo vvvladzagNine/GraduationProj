@@ -9,6 +9,7 @@ import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
 import ru.vladzag.repository.*;
 import ru.vladzag.to.RestaurantTo;
+import ru.vladzag.util.exception.ScoreAccessException;
 import ru.vladzag.util.restaurant.RestaurantUtil;
 
 import java.time.LocalDate;
@@ -51,14 +52,15 @@ public class RestaurantService {
         return RestaurantUtil.getWithFilteredDishesAndCountOfVotes(r,date);
     }
 
-    public List<RestaurantTo> getScoreForUser(int userId){
+    public List<RestaurantTo> getScoreForUser(int userId) throws ScoreAccessException{
         LocalDateTime now = LocalDateTime.now();
-        if(vRepo.gerInDateByUser(now.toLocalDate(),userId)!=null && now.toLocalTime().isAfter(LocalTime.of(11,0))){
-            return getAllWithVotes(now.toLocalDate());
-        }
-        else {
-            return null;
-        }
+        if(vRepo.gerInDateByUser(now.toLocalDate(),userId)!=null)
+            if(now.toLocalTime().isAfter(LocalTime.of(11,0)))
+                return getAllWithVotes(now.toLocalDate());
+            else throw new ScoreAccessException("Results of voting are available after 11 a.m. Now is " + now.toLocalTime());
+        else throw new ScoreAccessException("Results are available only for voted users");
+
+
     }
 
     public RestaurantTo getWithVotes(int id, LocalDate date){

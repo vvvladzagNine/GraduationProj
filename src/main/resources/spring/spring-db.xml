@@ -11,7 +11,15 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-<context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
+    <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
+
+    <!--no pooling-->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="org.hsqldb.jdbcDriver"
+          p:url="${database.url}"
+          p:username="${database.username}"
+          p:password="${database.password}"/>
 
     <context:component-scan base-package="ru.vladzag.**.repository"/>
     <jpa:repositories base-package="ru.vladzag.**.repository"/>
@@ -49,7 +57,7 @@
           p:entityManagerFactory-ref="entityManagerFactory"/>
 
 
-
+<!--
     <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
     <bean id="dataSource"
@@ -58,6 +66,7 @@
           p:url="${database.url}"
           p:username="${database.username}"
           p:password="${database.password}"/>
+          -->
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <constructor-arg ref="dataSource"/>

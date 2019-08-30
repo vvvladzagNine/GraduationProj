@@ -12,9 +12,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.util.NestedServletException;
 import ru.vladzag.model.Vote;
 import ru.vladzag.service.RestaurantService;
 import ru.vladzag.service.VoteService;
+import ru.vladzag.util.exception.ScoreAccessException;
 import ru.vladzag.util.exception.VoteExpiredException;
 import ru.vladzag.web.admin.AdminRestController;
 
@@ -92,11 +94,8 @@ class UserRestControllerTest {
     @Test
     void getScoreWithoutVoting() throws Exception {
         assertThrows(
-                AssertionError.class,()->
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)));
+                NestedServletException.class,()->
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score")));
     }
 
     @Test

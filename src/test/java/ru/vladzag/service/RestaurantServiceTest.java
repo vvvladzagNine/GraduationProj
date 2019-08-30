@@ -11,12 +11,15 @@ import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
 import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
+import ru.vladzag.util.exception.ScoreAccessException;
+import ru.vladzag.util.exception.VoteExpiredException;
 
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.vladzag.RestaurantTestData.*;
 import static ru.vladzag.UserTestData.*;
 
@@ -147,8 +150,9 @@ class RestaurantServiceTest {
     @Test
     void getScoreForUserWithoutVoting() {
 
-        List<RestaurantTo> listTo = service.getScoreForUser(USER_ID);
-        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(null);
+
+        assertThrows(ScoreAccessException.class,()->service.getScoreForUser(USER_ID));
+        //assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(null);
 
 
 

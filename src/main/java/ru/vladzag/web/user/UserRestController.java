@@ -8,6 +8,7 @@ import ru.vladzag.model.Vote;
 import ru.vladzag.service.RestaurantService;
 import ru.vladzag.service.VoteService;
 import ru.vladzag.to.RestaurantTo;
+import ru.vladzag.util.exception.ScoreAccessException;
 import ru.vladzag.web.SecurityUtil;
 import ru.vladzag.web.admin.AdminRestController;
 
@@ -32,7 +33,7 @@ public class UserRestController {
     }
 
     @GetMapping("/score")
-    public List<RestaurantTo> getScore(){
+    public List<RestaurantTo> getScore() {
         return rService.getScoreForUser(SecurityUtil.authUserId());
     }
 
