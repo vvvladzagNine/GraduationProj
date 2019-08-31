@@ -1,5 +1,6 @@
 package ru.vladzag.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ class VoteServiceTest {
     @Autowired
     VoteService service;
 
+
     @Test
     void createVote() throws VoteExpiredException {
         Vote v = new Vote();
@@ -59,14 +61,14 @@ class VoteServiceTest {
             service.updateVote(VOTE1_ID,USER_ID,RES2_ID);
 
             if(LocalTime.now().isAfter(LocalTime.of(11,0))){
-                throw new VoteExpiredException("User is available to change his mind after 11am !");
+                throw new VoteExpiredException("User is not available to change his mind after 11am !");
             }
             assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
 
         }
         catch (VoteExpiredException e){
             if(LocalTime.now().isBefore(LocalTime.of(11,0))){
-                throw new VoteExpiredException("User is not available to change his mind before 11am !");
+                throw new VoteExpiredException("User is available to change his mind before 11am !");
             }
             assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1);
 

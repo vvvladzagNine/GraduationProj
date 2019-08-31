@@ -2,6 +2,7 @@ package ru.vladzag.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 import static ru.vladzag.util.ValidationUtil.checkNotFoundWithId;
-
+//TODO закэшировать рестораны
 @Service
 public class RestaurantService {
 
@@ -42,6 +43,7 @@ public class RestaurantService {
         return restaurantCrudRepo.getWithMenu(id);
     }
 
+    @Cacheable("restaurants")
     public RestaurantTo getWithMenuInDate(int id, LocalDate date){
         Restaurant r =restaurantCrudRepo.getWithMenu(id);
         return RestaurantUtil.getWithFilteredDishes(r,date);
@@ -52,6 +54,7 @@ public class RestaurantService {
         return RestaurantUtil.getWithFilteredDishesAndCountOfVotes(r,date);
     }
 
+    @Cacheable("score")
     public List<RestaurantTo> getScoreForUser(int userId) throws ScoreAccessException{
         LocalDateTime now = LocalDateTime.now();
         if(vRepo.gerInDateByUser(now.toLocalDate(),userId)!=null)
@@ -73,21 +76,25 @@ public class RestaurantService {
         return RestaurantUtil.getAllWithFilteredCountOfVotes(list,date);
     }
 
+    @CacheEvict(value = "restaurants",allEntries = true)
     public void update(Restaurant r) {
         Assert.notNull(r, "user must not be null");
 //      checkNotFoundWithId : check works only for JDBC, disabled
         restaurantCrudRepo.save(r);
     }
 
-
+    @CacheEvict(value = "restaurants",allEntries = true)
     public Restaurant create(Restaurant r) {
         Assert.notNull(r, "user must not be null");
         return restaurantCrudRepo.save(r);
     }
-
+//restsAndDishes
+    @Cacheable("restaurants")
     public List<Restaurant> getAll(){
         return restaurantCrudRepo.getAll();
     }
+
+    @Cacheable("restaurants")
     public List<RestaurantTo> getAllTo(){
         return RestaurantUtil.getAllWithFilteredCountOfVotesInAllTime(restaurantCrudRepo.getAllWithVotes());
     }
@@ -98,11 +105,13 @@ public class RestaurantService {
         return RestaurantUtil.getInDate(restaurants,date);
     }*/
 
+    @CacheEvict(value = "restaurants",allEntries = true)
     public void updateDish(Dish dish, int resId) {
         Assert.notNull(dish, "meal must not be null");
         checkNotFoundWithId(restaurantCrudRepo.saveDish(dish, resId), dish.getId());
     }
 
+    @CacheEvict(value = "restaurants",allEntries = true)
     public Dish createDish(Dish meal, int resId) {
         Assert.notNull(meal, "meal must not be null");
         return restaurantCrudRepo.saveDish(meal, resId);
@@ -110,14 +119,22 @@ public class RestaurantService {
 
 
 
+    @CacheEvict(value = "restaurants",allEntries = true)
     public void deleteDish(int dishId){
         checkNotFoundWithId(restaurantCrudRepo.deleteDish(dishId), dishId);
     }
 
+    @CacheEvict(value = "restaurants",allEntries = true)
     public void delete(int id){
         checkNotFoundWithId(restaurantCrudRepo.delete(id), id);
 
     }
+
+    @CacheEvict(value = "score",allEntries = true)
+    public void cacheScoreEvict(){}
+
+    @CacheEvict(value = "restaurants",allEntries = true)
+    public void cacheRestaurantsEvict(){}
 
 
 

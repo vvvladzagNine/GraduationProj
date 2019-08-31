@@ -1,5 +1,6 @@
 package ru.vladzag.web.admin;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,13 @@ class AdminRestControllerTest {
     @Autowired
     RestaurantService service;
 
+
+    @BeforeEach
+    void cacheEvict(){
+        service.cacheRestaurantsEvict();
+        service.cacheScoreEvict();
+    }
+
     @PostConstruct
     private void postConstruct() {
         mockMvc = MockMvcBuilders
@@ -85,7 +93,7 @@ class AdminRestControllerTest {
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(RESWM2_TO,RES3_TO,RES2_TO,RES1_TO));
+                .andExpect(contentJson(RES1_TO,RES2_TO,RES3_TO,RESWM2_TO));
     }
 
     @Test
@@ -116,7 +124,7 @@ class AdminRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(RES1_UPD)))
                 .andExpect(status().isNoContent());
-        assertMatch(service.getAll(),RES2,RES3,RESWITHMEALS,RES1_UPD);
+        assertMatch(service.getAll(),RES1_UPD,RES2,RES3,RESWITHMEALS);
     }
     @Test
     void createWithLocation() throws Exception {

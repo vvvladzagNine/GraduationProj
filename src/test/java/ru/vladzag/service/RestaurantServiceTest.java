@@ -1,5 +1,6 @@
 package ru.vladzag.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,13 @@ class RestaurantServiceTest {
 
     @Autowired
     VoteService vService;
+
+
+    @BeforeEach
+    void cacheEvict(){
+        service.cacheRestaurantsEvict();
+        service.cacheScoreEvict();
+    }
 
 
 
@@ -132,7 +140,7 @@ class RestaurantServiceTest {
     @Test
     void getAllWithVotes() {
         List<RestaurantTo> listTo = service.getAllWithVotes(DATE_2015_05_30);
-        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(getToWithDishInDate(),RES3_TO,RES2_TO,RES1_TO));
+        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(RES1_TO,RES2_TO,RES3_TO,getToWithDishInDate()));
 
     }
 
@@ -141,7 +149,7 @@ class RestaurantServiceTest {
         vService.createVote(USER_ID,RES1_ID);
         List<RestaurantTo> listTo = service.getScoreForUser(USER_ID);
         if(LocalTime.now().isAfter(LocalTime.of(11,0)))
-            assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(RESWM_TO,RES1_TO_WITH_VOTE,RES3_TO,RES2_TO));
+            assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(RES1_TO_WITH_VOTE,RES2_TO,RES3_TO,RESWM_TO));
         else
             assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(null);
 

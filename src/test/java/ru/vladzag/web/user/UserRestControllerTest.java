@@ -1,5 +1,6 @@
 package ru.vladzag.web.user;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -64,6 +65,13 @@ class UserRestControllerTest {
     @Autowired
     VoteService vService;
 
+    @BeforeEach
+    void cacheEvict(){
+        service.cacheRestaurantsEvict();
+        service.cacheScoreEvict();
+    }
+
+
     @PostConstruct
     private void postConstruct() {
         mockMvc = MockMvcBuilders
@@ -87,7 +95,7 @@ class UserRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(RESWM_TO,RES1_TO_WITH_VOTE,RES3_TO,RES2_TO));
+                .andExpect(contentJson(RES1_TO_WITH_VOTE,RES2_TO,RES3_TO,RESWM_TO));
     }
 
 
