@@ -1,36 +1,55 @@
 package ru.vladzag.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.vladzag.model.Vote;
 import ru.vladzag.repository.CrudUserRepository;
 import ru.vladzag.repository.RestaurantJpaRepo;
 import ru.vladzag.repository.VoteCrudRepo;
+import ru.vladzag.to.RestaurantTo;
+import ru.vladzag.to.VoteTo;
 import ru.vladzag.util.exception.VoteExpiredException;
+import ru.vladzag.util.vote.VoteUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.vladzag.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VoteService {
 
-    @Autowired
+    final
     VoteCrudRepo voteCrudRepo;
 
-    @Autowired
+    final
     CrudUserRepository uRepo;
 
-    @Autowired
+    final
     RestaurantJpaRepo rRepo;
+
+    final
+    RestaurantService restaurantService;
+
+    public VoteService(VoteCrudRepo voteCrudRepo, CrudUserRepository uRepo, RestaurantJpaRepo rRepo, RestaurantService restaurantService) {
+        this.voteCrudRepo = voteCrudRepo;
+        this.uRepo = uRepo;
+        this.rRepo = rRepo;
+        this.restaurantService = restaurantService;
+    }
+
 
     public Vote get(int id){
         return voteCrudRepo.get(id);
     }
 
+    @CacheEvict(value = "votes",allEntries = true)
     public void updateVote(int voteId, int userId,int resId) throws VoteExpiredException {
         //Assert.notNull(vote, "vote must not be null");
         //LocalDate dateOfVote = vote.getDate();
@@ -48,11 +67,11 @@ public class VoteService {
 
     }
 
+    @CacheEvict(value = "votes",allEntries = true)
     public Vote createVote (int userId, int resId) throws VoteExpiredException{
 
         LocalDateTime now = LocalDateTime.now();
         Vote v = new Vote();
-
         Vote v2 = voteCrudRepo.gerInDateByUser(now.toLocalDate(),userId);
         if(v2!=null) throw new VoteExpiredException("User has already voted today");
         {
@@ -61,5 +80,20 @@ public class VoteService {
         }
 
     }
+
+    @Cacheable("votes")
+    public List<VoteTo> getVotesForUser(int userId){
+        List<Vote> votes = voteCrudRepo.getVotesByUser(userId);
+        return votes
+                .stream()
+                .map(vote -> {
+                    RestaurantTo rTo = restaurantService.getWithMenuInDate(vote.getElected().getId(),vote.getDate());
+                    return new VoteTo(vote.getId(),rTo,vote.getDate());
+                })
+                .collect(Collectors.toList());
+    }
+
+    @CacheEvict(value = "votes",allEntries = true)
+    public void cacheEict(){}
 
 }

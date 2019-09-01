@@ -9,10 +9,12 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.vladzag.model.Vote;
+import ru.vladzag.to.VoteTo;
 import ru.vladzag.util.exception.VoteExpiredException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.vladzag.VoteTestData.*;
@@ -31,6 +33,11 @@ class VoteServiceTest {
 
     @Autowired
     VoteService service;
+
+    @BeforeEach
+    void cacheEvict(){
+        service.cacheEict();
+    }
 
 
     @Test
@@ -74,7 +81,16 @@ class VoteServiceTest {
 
         }
 
-
     }
 
+    @Test
+    void getVotesForUser() {
+        List<VoteTo> votes = service.getVotesForUser(USER_ID);
+        assertThat(votes).usingElementComparatorIgnoringFields().isEqualTo(List.of(VOTE_EXISTED_TO));
+
+        assertThat(votes.get(0).getElected().getDishes()).usingElementComparatorIgnoringFields().isEqualTo(VOTE_EXISTED_TO.getElected().getDishes());
+
+
+
+    }
 }

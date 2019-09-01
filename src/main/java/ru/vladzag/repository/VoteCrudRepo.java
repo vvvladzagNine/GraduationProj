@@ -5,6 +5,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Vote;
+import ru.vladzag.to.VoteTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -56,6 +57,11 @@ public class VoteCrudRepo {
 
     public Vote gerInDateByUser(LocalDate date,int userId){
         return voteRepo.getInDateByUser(date,userId);
+    }
+
+    public List<Vote> getVotesByUser(int userId){
+        return voteRepo.getVotesByUser(userId);
+
     }
 
 }

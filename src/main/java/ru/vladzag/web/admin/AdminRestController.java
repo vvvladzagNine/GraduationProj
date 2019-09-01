@@ -13,6 +13,7 @@ import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.DateTimeUtil;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.vladzag.util.ValidationUtil.assureIdConsistent;
@@ -39,7 +40,7 @@ public class AdminRestController {
     public List<RestaurantTo> getAllHistory(@RequestParam(required = false) String date) {
         //log.info("getAll");
         if(date==null) {
-            return service.getAllTo();
+            return service.getAllToWithCountOfVotes();
         }
         else {
             return service.getAllWithVotes( DateTimeUtil.parseLocalDate(date));
@@ -47,9 +48,14 @@ public class AdminRestController {
     }
 
     @GetMapping("/{id}")
-    public RestaurantTo get(@PathVariable int id, @RequestParam String date) {
+    public RestaurantTo get(@PathVariable int id, @RequestParam(required = false) String date) {
+        if(date==null) {
+            return service.getWithMenuAndVotesInDate(id, LocalDate.now());
+        }
+        else
         return service.getWithMenuAndVotesInDate(id, DateTimeUtil.parseLocalDate(date));
     }
+
     @GetMapping("/dishes/{id}")
     public Dish get(@PathVariable int id) {
         return service.getDish(id);

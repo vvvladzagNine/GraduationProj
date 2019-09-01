@@ -11,7 +11,8 @@
         <expiry>
             <ttl unit="minutes">5</ttl>
         </expiry>
-        <heap unit="entries">5000</heap>
+        <heap>5000</heap>
+
     </cache-template>
 
     <cache-template name="singleNonExpiryCache">
@@ -21,8 +22,19 @@
         <heap>1</heap>
     </cache-template>
 
-    <cache alias="restaurants" uses-template="singleNonExpiryCache"/>
-    <cache alias="restsAndDishes" uses-template="singleNonExpiryCache"/>
+    <cache-template name="littleHeapNonExpiryCache">
+        <expiry>
+            <none/>
+        </expiry>
+        <heap>5</heap>
+    </cache-template>
+
+
+
+    <cache alias="restaurants" uses-template="singleNonExpiryCache" />
+    <cache alias="restaurantsTo" uses-template="littleHeapNonExpiryCache"/>
+
+    <cache alias="votes" uses-template="expiryCache"/>
 
     <cache alias="score" uses-template="expiryCache"/>
 </config>
