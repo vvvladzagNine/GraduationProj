@@ -42,8 +42,6 @@ class VoteServiceTest {
 
     @Test
     void createVote() throws VoteExpiredException {
-        Vote v = new Vote();
-        v.setDate(LocalDate.now());
         service.createVote(USER_ID,RES1_ID);
         assertThat(service.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1);
     }
@@ -61,8 +59,7 @@ class VoteServiceTest {
 
     @Test
     void updateVote() throws VoteExpiredException {
-        Vote v = new Vote();
-        v.setDate(LocalDate.now());
+
         service.createVote(USER_ID,RES1_ID);
         try {
             service.updateVote(VOTE1_ID,USER_ID,RES2_ID);

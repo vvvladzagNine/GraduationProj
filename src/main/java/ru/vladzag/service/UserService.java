@@ -3,8 +3,12 @@ package ru.vladzag.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.vladzag.AuthorizedUser;
 import ru.vladzag.model.User;
 import ru.vladzag.repository.DataJpaUserRepository;
 
@@ -15,7 +19,7 @@ import static ru.vladzag.util.ValidationUtil.checkNotFound;
 import static ru.vladzag.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final DataJpaUserRepository repository;
 
@@ -42,12 +46,12 @@ public class UserService {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    /*
+
     public User getByEmail(String email) {
         Assert.notNull(email, "email must not be null");
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
-    */
+
 
 
     @Cacheable("users")
@@ -59,5 +63,14 @@ public class UserService {
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
     }
 }

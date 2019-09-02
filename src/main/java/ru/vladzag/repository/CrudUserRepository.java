@@ -11,4 +11,10 @@ import ru.vladzag.model.User;
 
 public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.id=:id")
+    int delete(@Param("id") int id);
+
+    User getByEmail(String email);
 }

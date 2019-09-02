@@ -15,7 +15,7 @@ public class VoteTo {
 
     private RestaurantTo elected;
 
-    private int id;
+    private Integer id;
 
     private LocalDate date;
 
@@ -27,11 +27,11 @@ public class VoteTo {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

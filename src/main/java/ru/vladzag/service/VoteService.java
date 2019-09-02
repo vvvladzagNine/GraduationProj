@@ -74,10 +74,10 @@ public class VoteService {
         Vote v = new Vote();
         Vote v2 = voteCrudRepo.gerInDateByUser(now.toLocalDate(),userId);
         if(v2!=null) throw new VoteExpiredException("User has already voted today");
-        {
-            v.setDate(now.toLocalDate());
-            return voteCrudRepo.save(v, userId, resId);
-        }
+
+        v.setDate(now.toLocalDate());
+        return voteCrudRepo.save(v, userId, resId);
+
 
     }
 
