@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -37,6 +38,8 @@ class RestaurantServiceTest {
 
     @Autowired
     VoteService vService;
+
+
 
 
     @BeforeEach
@@ -88,6 +91,7 @@ class RestaurantServiceTest {
     @Test
     void getAll() {
         assertThat(service.getAll()).usingElementComparatorIgnoringFields("dishes", "votes").isEqualTo(RESTAURANTS);
+
     }
 
 

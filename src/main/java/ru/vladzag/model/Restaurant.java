@@ -11,6 +11,7 @@ import java.util.*;
 public class Restaurant extends AbstractNamedEntity {
 
 
+    //TODO проверку на одинаковые имена ресторанов
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private Set<Dish> dishes= new HashSet<>();
 

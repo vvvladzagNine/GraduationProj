@@ -3,6 +3,7 @@ package ru.vladzag.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -32,6 +33,7 @@ public class RestaurantService {
 
     @Autowired
     VoteCrudRepo vRepo;
+
 
     public Restaurant get(int id){
        return restaurantCrudRepo.get(id);
@@ -92,6 +94,7 @@ public class RestaurantService {
 //restsAndDishes
     @Cacheable("restaurants")
     public List<Restaurant> getAll(){
+
         return restaurantCrudRepo.getAll();
     }
 
