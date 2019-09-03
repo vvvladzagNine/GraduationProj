@@ -1,5 +1,7 @@
 package ru.vladzag.web.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ import static ru.vladzag.util.ValidationUtil.checkNew;
 @RequestMapping(value = AdminRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestController {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
 
     @Autowired
@@ -32,7 +35,7 @@ public class AdminRestController {
 
     @GetMapping
     public List<Restaurant> getAll() {
-        //log.info("getAll");
+        log.info("Admin getAll");
         return service.getAll();
     }
 
@@ -40,9 +43,11 @@ public class AdminRestController {
     public List<RestaurantTo> getAllHistory(@RequestParam(required = false) String date) {
         //log.info("getAll");
         if(date==null) {
+            log.info("Admin getHistory");
             return service.getAllToWithCountOfVotes();
         }
         else {
+            log.info("Admin getHistory in date:{}",date);
             return service.getAllWithVotes( DateTimeUtil.parseLocalDate(date));
         }
     }
@@ -50,14 +55,18 @@ public class AdminRestController {
     @GetMapping("/{id}")
     public RestaurantTo get(@PathVariable int id, @RequestParam(required = false) String date) {
         if(date==null) {
+            log.info("Admin getRestaurant(id: {}) with all dishes and votes",id);
             return service.getWithMenuAndVotesInDate(id, LocalDate.now());
         }
-        else
-        return service.getWithMenuAndVotesInDate(id, DateTimeUtil.parseLocalDate(date));
+        else {
+            log.info("Admin getRestaurant(id: {}) in date: {}",id,date);
+            return service.getWithMenuAndVotesInDate(id, DateTimeUtil.parseLocalDate(date));
+        }
     }
 
     @GetMapping("/dishes/{id}")
     public Dish get(@PathVariable int id) {
+        log.info("Admin getDish with id: {}", id);
         return service.getDish(id);
     }
 
@@ -67,6 +76,7 @@ public class AdminRestController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
+        log.info("Admin deleteRestaurant with id: {}",id);
         service.delete(id);
     }
 
@@ -74,6 +84,7 @@ public class AdminRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant res, @PathVariable int id) {
+        log.info("Admin updateRestaurant with id: {}",res.getId());
         assureIdConsistent(res, id);
         service.update(res);
     }
@@ -88,6 +99,7 @@ public class AdminRestController {
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
+        log.info("Admin createRestaurant with id: {}",created.getId());
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
@@ -101,6 +113,7 @@ public class AdminRestController {
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/dishes/{id}")
                 .buildAndExpand(created.getId()).toUri();
+        log.info("Admin createDish with id: {}",created.getId());
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
@@ -110,6 +123,7 @@ public class AdminRestController {
                            @PathVariable int id,
                            @PathVariable int resId) {
         assureIdConsistent(dish, id);
+        log.info("Admin updateDish with id: {}",dish.getId());
         service.updateDish(dish,id);
     }
 
@@ -117,6 +131,7 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDish(@PathVariable int id,
                        @PathVariable int resId) {
+        log.info("Admin deleteDish with id: {}",id);
         service.deleteDish(id);
     }
 
