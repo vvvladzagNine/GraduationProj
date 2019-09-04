@@ -120,18 +120,14 @@ class AdminRestControllerTest {
 
     @Test
     void update() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES1_ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(RES1_UPD)))
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES1_ID+"?restaurantName="+RES1_UPD.getName()))
                 .andExpect(status().isNoContent());
         assertMatch(service.getAll(),RES1_UPD,RES2,RES3,RESWITHMEALS);
     }
     @Test
     void createWithLocation() throws Exception {
         Restaurant created = getResToSave();
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(created)));
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"?restaurantName="+RES_SAVED.getName()));
 
         Restaurant returned = readFromJson(action, Restaurant.class);
         created.setId(returned.getId());

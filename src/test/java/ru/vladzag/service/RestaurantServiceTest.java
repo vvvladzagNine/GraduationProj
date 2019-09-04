@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -14,7 +13,6 @@ import ru.vladzag.model.Restaurant;
 import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.exception.ScoreAccessException;
-import ru.vladzag.util.exception.VoteExpiredException;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -97,8 +95,8 @@ class RestaurantServiceTest {
 
     @Test
     void save() {
-        Restaurant r = getResToSave();
-        service.create(r);
+
+        service.create(getResToSave());
         assertThat(service.getAll()).containsExactlyInAnyOrder(RES1,RES2,RES3,RESWITHMEALS,RES_SAVED);
     }
 

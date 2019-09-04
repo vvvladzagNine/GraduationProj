@@ -1,18 +1,15 @@
 package ru.vladzag.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import ru.vladzag.model.Vote;
 import ru.vladzag.repository.CrudUserRepository;
 import ru.vladzag.repository.RestaurantJpaRepo;
 import ru.vladzag.repository.VoteCrudRepo;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.to.VoteTo;
-import ru.vladzag.util.exception.VoteExpiredException;
-import ru.vladzag.util.vote.VoteUtil;
+import ru.vladzag.util.exception.VoteException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,7 +47,7 @@ public class VoteService {
     }
 
     @CacheEvict(value = "votes",allEntries = true)
-    public void updateVote(int voteId, int userId,int resId) throws VoteExpiredException {
+    public void updateVote(int voteId, int userId,int resId) throws VoteException {
         //Assert.notNull(vote, "vote must not be null");
         //LocalDate dateOfVote = vote.getDate();
         Vote v = voteCrudRepo.get(voteId);
@@ -62,18 +59,18 @@ public class VoteService {
                 now.toLocalTime().isBefore(LocalTime.of(11,0)))
         {
             checkNotFoundWithId(voteCrudRepo.update(v,resId), v.getId());
-        }else throw new VoteExpiredException("Now is " + now.toLocalTime()+", it is too late to vote ");
+        }else throw new VoteException("Now is " + now.toLocalTime()+", it is too late to change your mind ");
 
 
     }
 
     @CacheEvict(value = "votes",allEntries = true)
-    public Vote createVote (int userId, int resId) throws VoteExpiredException{
+    public Vote createVote (int userId, int resId) throws VoteException {
 
         LocalDateTime now = LocalDateTime.now();
         Vote v = new Vote();
         Vote v2 = voteCrudRepo.gerInDateByUser(now.toLocalDate(),userId);
-        if(v2!=null) throw new VoteExpiredException("User has already voted today");
+        if(v2!=null) throw new VoteException("User has already voted today");
 
         v.setDate(now.toLocalDate());
         return voteCrudRepo.save(v, userId, resId);

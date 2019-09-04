@@ -17,12 +17,8 @@ import org.springframework.web.util.NestedServletException;
 import ru.vladzag.model.Vote;
 import ru.vladzag.service.RestaurantService;
 import ru.vladzag.service.VoteService;
-import ru.vladzag.util.exception.ScoreAccessException;
-import ru.vladzag.util.exception.VoteExpiredException;
-import ru.vladzag.web.admin.AdminRestController;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,12 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.vladzag.RestaurantTestData.*;
-import static ru.vladzag.UserTestData.USER_ID;
 import static ru.vladzag.VoteTestData.*;
-import static ru.vladzag.TestUtil.readFromJson;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-mvc.xml",
@@ -101,9 +93,9 @@ class UserRestControllerTest {
 
     @Test
     void getScoreWithoutVoting() throws Exception {
-        assertThrows(
-                NestedServletException.class,()->
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score")));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score"))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -125,9 +117,8 @@ class UserRestControllerTest {
     @Test
     void createTwice() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES1_ID));
-        assertThrows(
-                Exception.class,
-                ()->mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES2_ID)));
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES2_ID))
+                .andExpect(status().isForbidden());
 
     }
 
@@ -135,9 +126,8 @@ class UserRestControllerTest {
         void updateVote() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES1_ID));
         if(LocalTime.now().isAfter(LocalTime.of(11,0)))
-        assertThrows(
-                Exception.class,
-                ()->mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES2_ID+"/"+VOTE1_ID)));
+            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES2_ID+"/"+VOTE1_ID))
+                    .andExpect(status().isForbidden());
         else{
             mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES2_ID+"/"+VOTE1_ID));
             assertThat(vService.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
