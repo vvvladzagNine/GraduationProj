@@ -43,7 +43,7 @@ public class VoteService {
 
 
     public Vote get(int id){
-        return voteCrudRepo.get(id);
+        return checkNotFoundWithId(voteCrudRepo.get(id),id);
     }
 
     @CacheEvict(value = "votes",allEntries = true)

@@ -36,10 +36,10 @@ public class RestaurantService {
 
 
     public Restaurant get(int id){
-       return restaurantCrudRepo.get(id);
+       return checkNotFoundWithId(restaurantCrudRepo.get(id),id);
     }
 
-    public Dish getDish(int id){return restaurantCrudRepo.getDish(id);}
+    public Dish getDish(int id){return checkNotFoundWithId(restaurantCrudRepo.getDish(id),id);}
 
     public Restaurant getWithMenu(int id){
         return restaurantCrudRepo.getWithMenu(id);
@@ -48,11 +48,13 @@ public class RestaurantService {
     @Cacheable("restaurantsTo")
     public RestaurantTo getWithMenuInDate(int id, LocalDate date){
         Restaurant r =restaurantCrudRepo.getWithMenu(id);
+        checkNotFoundWithId(r,id);
         return RestaurantUtil.getWithFilteredDishes(r,date);
     }
 
     public RestaurantTo getWithMenuAndVotesInDate(int id, LocalDate date){
         Restaurant r =restaurantCrudRepo.getWithMenuAndVotes(id);
+        checkNotFoundWithId(r,id);
         return RestaurantUtil.getWithFilteredDishesAndCountOfVotes(r,date);
     }
 
@@ -70,6 +72,7 @@ public class RestaurantService {
 
     public RestaurantTo getWithVotes(int id, LocalDate date){
         Restaurant r = restaurantCrudRepo.getWithVotes(id);
+        checkNotFoundWithId(r,id);
         return RestaurantUtil.getWithFilteredCountOfVotes(r,date);
     }
 
@@ -81,7 +84,7 @@ public class RestaurantService {
 
     @CacheEvict(value = {"restaurants","restaurantsTo"},allEntries = true)
     public void update(Restaurant r) {
-        Assert.notNull(r, "user must not be null");
+        Assert.notNull(r, "restaurant must not be null");
 //      checkNotFoundWithId : check works only for JDBC, disabled
         restaurantCrudRepo.save(r);
     }

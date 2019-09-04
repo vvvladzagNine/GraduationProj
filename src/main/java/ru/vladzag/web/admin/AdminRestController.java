@@ -123,7 +123,7 @@ public class AdminRestController {
                            @PathVariable int resId) {
         assureIdConsistent(dish, id);
         log.info("Admin updateDish with id: {}",dish.getId());
-        service.updateDish(dish,id);
+        service.updateDish(dish,resId);
     }
 
     @DeleteMapping("/{resId}/dishes/{id}")
