@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
 import ru.vladzag.service.RestaurantService;
+import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.DateTimeUtil;
 
@@ -105,8 +106,10 @@ public class AdminRestController {
 
     @PostMapping(value = "/{resId}/dishes",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createDish(
-            @RequestBody Dish d,
+            @RequestBody DishTo dto,
             @PathVariable int resId) {
+
+        Dish d = new Dish(dto);
         checkNew(d);
         Dish created = service.createDish(d,resId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

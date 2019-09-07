@@ -94,14 +94,14 @@ public class RestaurantService {
         Assert.notNull(r, "user must not be null");
         return restaurantCrudRepo.save(r);
     }
-//restsAndDishes
+
     @Cacheable("restaurants")
     public List<Restaurant> getAll(){
 
         return restaurantCrudRepo.getAll();
     }
 
-    @Cacheable("restaurantsTo")
+
     public List<RestaurantTo> getAllToWithCountOfVotes(){
         return RestaurantUtil.getAllWithFilteredCountOfVotesInAllTime(restaurantCrudRepo.getAllWithVotes());
     }

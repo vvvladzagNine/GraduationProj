@@ -2,6 +2,9 @@ package ru.vladzag.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
+import ru.vladzag.to.DishTo;
+import ru.vladzag.util.DateTimeUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +16,7 @@ import java.time.LocalDate;
 @Table(name = "res_dishes")
 public class Dish extends AbstractNamedEntity {
 
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     @Column(name = "date", nullable = false)
     @NotNull
     private LocalDate date;
@@ -40,6 +44,12 @@ public class Dish extends AbstractNamedEntity {
         this.date = date;
         this.price = price;
         this.name = name;
+    }
+
+    public Dish(DishTo dto) {
+        price=dto.getPrice();
+        name=dto.getName();
+        date=dto.getDate();
     }
 
     public LocalDate getDate() {

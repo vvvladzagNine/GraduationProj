@@ -9,7 +9,15 @@
 
     <cache-template name="expiryCache">
         <expiry>
-            <ttl unit="minutes">5</ttl>
+            <ttl unit="minutes">3</ttl>
+        </expiry>
+        <heap>5000</heap>
+
+    </cache-template>
+
+    <cache-template name="fastExpiryCache">
+        <expiry>
+            <ttl unit="seconds">30</ttl>
         </expiry>
         <heap>5000</heap>
 
@@ -36,5 +44,5 @@
 
     <cache alias="votes" uses-template="expiryCache"/>
 
-    <cache alias="score" uses-template="expiryCache"/>
+    <cache alias="score" uses-template="fastExpiryCache"/>
 </config>

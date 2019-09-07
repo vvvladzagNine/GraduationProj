@@ -56,14 +56,14 @@ public class UserRestController {
         return rService.getWithMenuInDate(id, LocalDate.now());
     }
 
-    @PostMapping("/{id}")
-    public Vote createVote(@PathVariable int id) throws Exception{
+    @PostMapping("/voter")
+    public Vote createVote(@RequestParam int id) throws Exception{
         log.info("User vote for restaurant with id: {}",id);
         return vService.createVote(SecurityUtil.authUserId(),id);
     }
 
-    @PutMapping("/{id}/{voteId}")
-    public void updateVote(@PathVariable(name = "id") int resId,@PathVariable int voteId) throws Exception{
+    @PutMapping("/voter")
+    public void updateVote(@RequestParam int resId,@RequestParam int voteId) throws Exception{
         log.info("User updateVote(id: {}) for restaurant with id: {}",voteId,resId);
         vService.updateVote(voteId, SecurityUtil.authUserId(),resId);
     }

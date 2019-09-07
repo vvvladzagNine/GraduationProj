@@ -46,7 +46,7 @@ public class VoteService {
         return checkNotFoundWithId(voteCrudRepo.get(id),id);
     }
 
-    @CacheEvict(value = "votes",allEntries = true)
+    //@CacheEvict(value = "votes",allEntries = true)
     public void updateVote(int voteId, int userId,int resId) throws VoteException {
         //Assert.notNull(vote, "vote must not be null");
         //LocalDate dateOfVote = vote.getDate();
@@ -64,7 +64,7 @@ public class VoteService {
 
     }
 
-    @CacheEvict(value = "votes",allEntries = true)
+    @CacheEvict(value = "votes",allEntries = false)
     public Vote createVote (int userId, int resId) throws VoteException {
 
         LocalDateTime now = LocalDateTime.now();
@@ -78,7 +78,7 @@ public class VoteService {
 
     }
 
-    @Cacheable("votes")
+    //@Cacheable("votes")
     public List<VoteTo> getVotesForUser(int userId){
         List<Vote> votes = voteCrudRepo.getVotesByUser(userId);
         return votes
@@ -87,10 +87,15 @@ public class VoteService {
                     RestaurantTo rTo = restaurantService.getWithMenuInDate(vote.getElected().getId(),vote.getDate());
                     return new VoteTo(vote.getId(),rTo,vote.getDate());
                 })
+                .sorted((v1,v2)->{
+                    if(v1.getDate().isEqual(v2.getDate()))return 0;
+                    if(v1.getDate().isBefore(v2.getDate()))return 1;
+                    else return -1;
+                })
                 .collect(Collectors.toList());
     }
 
     @CacheEvict(value = "votes",allEntries = true)
-    public void cacheEict(){}
+    public void cacheEvict(){}
 
 }

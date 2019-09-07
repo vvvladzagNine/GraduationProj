@@ -5,6 +5,7 @@ import ru.vladzag.to.DishTo;
 import ru.vladzag.to.RestaurantTo;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -49,6 +50,7 @@ public class RestaurantUtil {
                     RestaurantTo rTo = new RestaurantTo(r.getId(),r.getName());
                     rTo.setCountOfVotes((int)r.getVotes().stream().filter(vote -> vote.getDate().equals(date)).count());
                     return rTo; })
+                .sorted(Comparator.comparingInt(RestaurantTo::getCountOfVotes).reversed())
                 .collect(Collectors.toList());
 
 

@@ -36,7 +36,7 @@ class VoteServiceTest {
 
     @BeforeEach
     void cacheEvict(){
-        service.cacheEict();
+        service.cacheEvict();
     }
 
 

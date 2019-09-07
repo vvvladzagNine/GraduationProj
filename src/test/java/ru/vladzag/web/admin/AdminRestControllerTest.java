@@ -19,6 +19,8 @@ import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
 import ru.vladzag.service.RestaurantService;
 import ru.vladzag.web.json.JsonUtil;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 
 import javax.annotation.PostConstruct;
 
@@ -31,6 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.vladzag.RestaurantTestData.*;
 import static ru.vladzag.TestUtil.readFromJson;
+import static ru.vladzag.TestUtil.userHttpBasic;
+import static ru.vladzag.UserTestData.ADMIN;
 
 
 @SpringJUnitWebConfig(locations = {
@@ -78,7 +82,7 @@ class AdminRestControllerTest {
 
     @Test
     void getAll() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
@@ -88,7 +92,7 @@ class AdminRestControllerTest {
 
     @Test
     void getAllHistory() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "history"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "history").with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
@@ -98,7 +102,7 @@ class AdminRestControllerTest {
 
     @Test
     void get() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + RESWM_ID+ "?date=2015-05-30"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + RESWM_ID+ "?date=2015-05-30").with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
@@ -110,7 +114,7 @@ class AdminRestControllerTest {
 
     @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL+RES1_ID))
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL+RES1_ID).with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 
@@ -120,14 +124,14 @@ class AdminRestControllerTest {
 
     @Test
     void update() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES1_ID+"?restaurantName="+RES1_UPD.getName()))
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES1_ID+"?restaurantName="+RES1_UPD.getName()).with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
         assertMatch(service.getAll(),RES1_UPD,RES2,RES3,RESWITHMEALS);
     }
     @Test
     void createWithLocation() throws Exception {
         Restaurant created = getResToSave();
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"?restaurantName="+RES_SAVED.getName()));
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"?restaurantName="+RES_SAVED.getName()).with(userHttpBasic(ADMIN)));
 
         Restaurant returned = readFromJson(action, Restaurant.class);
         created.setId(returned.getId());
@@ -138,7 +142,7 @@ class AdminRestControllerTest {
     @Test
     void createDishWithLocation() throws Exception {
         Dish created = getDishToSave();
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + RESWM_ID + "/dishes")
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + RESWM_ID + "/dishes").with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(created)));
 
@@ -154,7 +158,7 @@ class AdminRestControllerTest {
     }
     @Test
     void updateDish() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RESWM_ID+"/dishes/"+DISH2_ID)
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RESWM_ID+"/dishes/"+DISH2_ID).with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(DISH_2_UPDATED)));
         assertThat(service.getDish(DISH2_ID)).isEqualToIgnoringGivenFields(DISH_2_UPDATED,"restaurant");
@@ -162,7 +166,7 @@ class AdminRestControllerTest {
     }
     @Test
     void deleteDish() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL+RES1_ID))
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL+RES1_ID).with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 

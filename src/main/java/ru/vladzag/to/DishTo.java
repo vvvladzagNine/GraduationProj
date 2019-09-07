@@ -1,10 +1,21 @@
 package ru.vladzag.to;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import ru.vladzag.util.DateTimeUtil;
+
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class DishTo {
     private Integer id;
+    @NotBlank
     private String name;
+
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    @NotBlank
+    private LocalDate date;
+    @NotBlank
     private int price;
 
     public DishTo(Integer id, String name, int price) {
@@ -13,7 +24,34 @@ public class DishTo {
         this.price = price;
     }
 
+    public DishTo(Integer id, String name, LocalDate date, int price) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.price = price;
+    }
+
+    public DishTo(String name, LocalDate date, int price) {
+        this.name = name;
+        this.date = date;
+        this.price = price;
+    }
+
+
+
     public DishTo() {
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Integer getId() {

@@ -23,10 +23,14 @@ import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.vladzag.RestaurantTestData.*;
+import static ru.vladzag.TestUtil.userHttpBasic;
+import static ru.vladzag.UserTestData.ADMIN;
+import static ru.vladzag.UserTestData.USER;
 import static ru.vladzag.VoteTestData.*;
 
 @SpringJUnitWebConfig(locations = {
@@ -69,12 +73,13 @@ class UserRestControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -82,8 +87,8 @@ class UserRestControllerTest {
     }
     @Test
     void getScore() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES1_ID));
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score"))
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"voter?id="+RES1_ID).with(userHttpBasic(USER)));
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score").with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -94,13 +99,13 @@ class UserRestControllerTest {
     @Test
     void getScoreWithoutVoting() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+"score").with(userHttpBasic(USER)))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     void getRestaurant() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+RESWM_ID))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL+RESWM_ID).with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -109,27 +114,27 @@ class UserRestControllerTest {
 
     @Test
     void createVote() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES1_ID));
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"voter?id="+RES1_ID).with(userHttpBasic(USER)));
         Vote v =vService.get(VOTE1_ID);
         assertThat(v).isEqualToIgnoringGivenFields(VOTE1);
     }
 
     @Test
     void createTwice() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES1_ID));
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES2_ID))
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"voter?id="+RES1_ID).with(userHttpBasic(USER)));
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"voter?id="+RES2_ID).with(userHttpBasic(USER)))
                 .andExpect(status().isForbidden());
 
     }
 
     @Test
         void updateVote() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+RES1_ID));
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL+"voter?id="+RES1_ID).with(userHttpBasic(USER)));
         if(LocalTime.now().isAfter(LocalTime.of(11,0)))
-            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES2_ID+"/"+VOTE1_ID))
+            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+"voter?resId="+RES2_ID+"&voteId="+VOTE1_ID).with(userHttpBasic(USER)))
                     .andExpect(status().isForbidden());
         else{
-            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+RES2_ID+"/"+VOTE1_ID));
+            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL+"voter?resId="+RES2_ID+"&voteId="+VOTE1_ID).with(userHttpBasic(USER)));
             assertThat(vService.get(VOTE1_ID)).isEqualToIgnoringGivenFields(VOTE1_UPDATED);
         }
     }
