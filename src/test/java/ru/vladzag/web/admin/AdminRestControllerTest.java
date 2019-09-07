@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -38,6 +40,7 @@ import static ru.vladzag.UserTestData.ADMIN;
 //@WebAppConfiguration
 //@ExtendWith(SpringExtension.class)
 @Transactional
+@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 class AdminRestControllerTest {
 
 
@@ -130,7 +133,7 @@ class AdminRestControllerTest {
         created.setId(returned.getId());
         assertMatch(returned, created);
         //In spite of @Transactional sequence has not been restarted that's why saved entity id is 100010 or 100011
-        assertThat(service.getAll()).usingElementComparatorIgnoringFields("id","votes","dishes").isEqualTo(List.of(RES1,RES2,RES3,RESWITHMEALS,RES_SAVED));
+        assertThat(service.getAll()).usingElementComparatorIgnoringFields("votes","dishes").isEqualTo(List.of(RES1,RES2,RES3,RESWITHMEALS,RES_SAVED));
     }
     @Test
     void createDishWithLocation() throws Exception {

@@ -32,7 +32,7 @@
 `curl --user admin@gmail.com:admin http://localhost:8080/restaraunt/rest/admin/restaurants/100005?date=2015-05-29`
 
 #### create Dish for Restaurant 100002
-`curl --user admin@gmail.com:admin  --data '{"id":null,"name":"Cake2","date":"2015-05-29","price":200}' -H "Content-Type: application/json" -X POST http://localhost:8080/restaraunt/rest/admin/restaurants/100002/dishes`
+`curl --user admin@gmail.com:admin  --data '{"id":null,"name":"Cake2","date":null,"price":200}' -H "Content-Type: application/json" -X POST http://localhost:8080/restaraunt/rest/admin/restaurants/100002/dishes`
 
 #### get Dish 100007
 `curl --user admin@gmail.com:admin http://localhost:8080/restaraunt/rest/admin/restaurants/dishes/100007`

@@ -31,7 +31,7 @@ public class RestaurantUtil {
         rTo.setDishes(r.getDishes()
                 .stream()
                 .filter(dish -> dish.getDate().equals(date))
-                .map(dish -> new DishTo(dish.getId(),dish.getName(),dish.getPrice()))
+                .map(dish -> new DishTo(dish.getId(),dish.getName(),dish.getDate(),dish.getPrice()))
                 .collect(Collectors.toList()));
         rTo.setCountOfVotes((int)r.getVotes().stream().filter(vote -> vote.getDate().equals(date)).count());
 

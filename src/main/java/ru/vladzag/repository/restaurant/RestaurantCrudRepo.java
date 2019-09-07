@@ -8,6 +8,7 @@ import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
 import ru.vladzag.repository.vote.VoteJpaRepo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -63,6 +64,7 @@ public class RestaurantCrudRepo {
             return null;
         }
         dish.setRestaurant(restaurantJpaRepo.getOne(restId));
+        if(dish.getDate()==null)dish.setDate(LocalDate.now());
         return dishRepo.save(dish);
     }
 

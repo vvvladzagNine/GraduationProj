@@ -142,7 +142,7 @@ class RestaurantServiceTest {
     @Test
     void getAllWithVotes() {
         List<RestaurantTo> listTo = service.getAllWithVotes(DATE_2015_05_30);
-        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(RES1_TO,RES2_TO,RES3_TO,getToWithDishInDate()));
+        assertThat(listTo).usingElementComparatorIgnoringFields("dishes").isEqualTo(List.of(getToWithDishInDate(),RES1_TO,RES2_TO,RES3_TO));
 
     }
 
