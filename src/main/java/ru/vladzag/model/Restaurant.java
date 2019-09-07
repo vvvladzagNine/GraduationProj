@@ -1,9 +1,7 @@
 package ru.vladzag.model;
 
-import org.hibernate.annotations.Columns;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.*;
 
 @Entity

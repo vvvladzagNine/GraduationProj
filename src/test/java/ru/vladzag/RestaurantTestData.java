@@ -10,11 +10,10 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.vladzag.model.AbstractBaseEntity.START_SEQ;
 import static ru.vladzag.TestUtil.readFromJsonMvcResult;
 import static ru.vladzag.TestUtil.readListFromJsonMvcResult;
+import static ru.vladzag.model.AbstractBaseEntity.START_SEQ;
 
 
 public class RestaurantTestData {

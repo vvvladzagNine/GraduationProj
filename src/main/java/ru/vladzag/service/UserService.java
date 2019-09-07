@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.vladzag.AuthorizedUser;
 import ru.vladzag.model.User;
-import ru.vladzag.repository.DataJpaUserRepository;
+import ru.vladzag.repository.user.UserCrudRepo;
 
 
 import java.util.List;
@@ -21,10 +21,10 @@ import static ru.vladzag.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final DataJpaUserRepository repository;
+    private final UserCrudRepo repository;
 
     @Autowired
-    public UserService(DataJpaUserRepository repository) {
+    public UserService(UserCrudRepo repository) {
         this.repository = repository;
     }
 

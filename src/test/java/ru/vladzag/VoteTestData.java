@@ -1,6 +1,5 @@
 package ru.vladzag;
 
-import ru.vladzag.model.Restaurant;
 import ru.vladzag.model.Vote;
 import ru.vladzag.to.VoteTo;
 

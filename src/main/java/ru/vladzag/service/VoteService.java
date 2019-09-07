@@ -1,12 +1,11 @@
 package ru.vladzag.service;
 
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.vladzag.model.Vote;
-import ru.vladzag.repository.CrudUserRepository;
-import ru.vladzag.repository.RestaurantJpaRepo;
-import ru.vladzag.repository.VoteCrudRepo;
+import ru.vladzag.repository.user.UserJpaRepo;
+import ru.vladzag.repository.restaurant.RestaurantJpaRepo;
+import ru.vladzag.repository.vote.VoteCrudRepo;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.to.VoteTo;
 import ru.vladzag.util.exception.VoteException;
@@ -26,7 +25,7 @@ public class VoteService {
     VoteCrudRepo voteCrudRepo;
 
     final
-    CrudUserRepository uRepo;
+    UserJpaRepo uRepo;
 
     final
     RestaurantJpaRepo rRepo;
@@ -34,7 +33,7 @@ public class VoteService {
     final
     RestaurantService restaurantService;
 
-    public VoteService(VoteCrudRepo voteCrudRepo, CrudUserRepository uRepo, RestaurantJpaRepo rRepo, RestaurantService restaurantService) {
+    public VoteService(VoteCrudRepo voteCrudRepo, UserJpaRepo uRepo, RestaurantJpaRepo rRepo, RestaurantService restaurantService) {
         this.voteCrudRepo = voteCrudRepo;
         this.uRepo = uRepo;
         this.rRepo = rRepo;

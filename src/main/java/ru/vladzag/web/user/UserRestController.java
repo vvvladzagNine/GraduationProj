@@ -11,9 +11,7 @@ import ru.vladzag.service.RestaurantService;
 import ru.vladzag.service.VoteService;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.to.VoteTo;
-import ru.vladzag.util.exception.ScoreAccessException;
 import ru.vladzag.web.SecurityUtil;
-import ru.vladzag.web.admin.AdminRestController;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,7 +1,6 @@
-package ru.vladzag.repository;
+package ru.vladzag.repository.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import ru.vladzag.model.User;
 
@@ -9,10 +8,10 @@ import ru.vladzag.model.User;
 import java.util.List;
 
 @Repository
-public class DataJpaUserRepository {
+public class UserCrudRepo {
 
     @Autowired
-    private CrudUserRepository crudRepository;
+    private UserJpaRepo crudRepository;
 
 
     public User save(User user) {
@@ -23,11 +22,9 @@ public class DataJpaUserRepository {
         return crudRepository.findById(id).orElse(null);
     }
 
-
     public User getByEmail(String email) {
         return crudRepository.getByEmail(email);
     }
-
 
     public List<User> getAll() {
         return crudRepository.findAll();

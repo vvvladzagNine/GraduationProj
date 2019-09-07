@@ -1,11 +1,10 @@
-package ru.vladzag.repository;
+package ru.vladzag.repository.vote;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.vladzag.model.Dish;
 import ru.vladzag.model.Vote;
-import ru.vladzag.to.VoteTo;
+import ru.vladzag.repository.restaurant.RestaurantJpaRepo;
+import ru.vladzag.repository.user.UserJpaRepo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,13 +14,13 @@ public class VoteCrudRepo {
 
 
     @Autowired
-    VoteRepo voteRepo;
+    VoteJpaRepo voteRepo;
 
     @Autowired
     RestaurantJpaRepo resRep;
 
     @Autowired
-    CrudUserRepository userRep;
+    UserJpaRepo userRep;
 
 
     public Vote get(int id) {

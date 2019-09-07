@@ -1,4 +1,4 @@
-package ru.vladzag.repository;
+package ru.vladzag.repository.vote;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface VoteRepo extends JpaRepository<Vote,Integer> {
+public interface VoteJpaRepo extends JpaRepository<Vote,Integer> {
 
     Vote getById(int id);
 

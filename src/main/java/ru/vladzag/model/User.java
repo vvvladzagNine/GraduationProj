@@ -54,9 +54,6 @@ public class User extends AbstractNamedEntity {
     private Set<Vote> votes;
 
 
-
-
-
     public User() {
     }
 
@@ -117,8 +114,6 @@ public class User extends AbstractNamedEntity {
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
-
-
 
     @Override
     public String toString() {

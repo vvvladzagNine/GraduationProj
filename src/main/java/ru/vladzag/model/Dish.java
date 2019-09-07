@@ -7,9 +7,7 @@ import ru.vladzag.to.DishTo;
 import ru.vladzag.util.DateTimeUtil;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity

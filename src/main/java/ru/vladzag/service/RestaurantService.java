@@ -3,13 +3,13 @@ package ru.vladzag.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.vladzag.model.Dish;
 import ru.vladzag.model.Restaurant;
-import ru.vladzag.repository.*;
+import ru.vladzag.repository.restaurant.RestaurantCrudRepo;
+import ru.vladzag.repository.user.UserCrudRepo;
+import ru.vladzag.repository.vote.VoteCrudRepo;
 import ru.vladzag.to.RestaurantTo;
 import ru.vladzag.util.exception.ScoreAccessException;
 import ru.vladzag.util.restaurant.RestaurantUtil;
@@ -29,7 +29,7 @@ public class RestaurantService {
     RestaurantCrudRepo restaurantCrudRepo;
 
     @Autowired
-    DataJpaUserRepository uRepo;
+    UserCrudRepo uRepo;
 
     @Autowired
     VoteCrudRepo vRepo;

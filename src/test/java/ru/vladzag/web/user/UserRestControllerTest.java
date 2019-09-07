@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.util.NestedServletException;
 import ru.vladzag.model.Vote;
 import ru.vladzag.service.RestaurantService;
 import ru.vladzag.service.VoteService;
@@ -22,14 +21,12 @@ import javax.annotation.PostConstruct;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.vladzag.RestaurantTestData.*;
 import static ru.vladzag.TestUtil.userHttpBasic;
-import static ru.vladzag.UserTestData.ADMIN;
 import static ru.vladzag.UserTestData.USER;
 import static ru.vladzag.VoteTestData.*;
 

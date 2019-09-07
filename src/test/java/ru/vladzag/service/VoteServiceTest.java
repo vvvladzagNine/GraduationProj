@@ -8,19 +8,18 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import ru.vladzag.model.Vote;
 import ru.vladzag.to.VoteTo;
 import ru.vladzag.util.exception.VoteException;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.vladzag.RestaurantTestData.RES1_ID;
+import static ru.vladzag.RestaurantTestData.RES2_ID;
+import static ru.vladzag.UserTestData.USER_ID;
 import static ru.vladzag.VoteTestData.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.vladzag.RestaurantTestData.*;
-import static ru.vladzag.UserTestData.*;
 
 
 @SpringJUnitConfig(locations = {

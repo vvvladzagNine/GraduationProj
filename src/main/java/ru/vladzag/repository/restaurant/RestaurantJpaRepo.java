@@ -1,4 +1,4 @@
-package ru.vladzag.repository;
+package ru.vladzag.repository.restaurant;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
