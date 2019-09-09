@@ -1,4 +1,4 @@
-## Getting started:
+## How to run:
 Run ->
 Edit configurations ->
 Tomcat ->
