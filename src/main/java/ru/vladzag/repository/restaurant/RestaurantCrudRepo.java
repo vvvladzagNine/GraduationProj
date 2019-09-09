@@ -73,5 +73,7 @@ public class RestaurantCrudRepo {
     }
 
 
-
+    public List<Restaurant> getAllWithDishes() {
+        return restaurantJpaRepo.getAllWithDishes();
+    }
 }

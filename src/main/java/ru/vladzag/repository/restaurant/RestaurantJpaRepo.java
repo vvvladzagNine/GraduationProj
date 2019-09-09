@@ -39,9 +39,7 @@ public interface RestaurantJpaRepo extends JpaRepository<Restaurant,Integer> {
     List<Restaurant> getAllWithVotes();
 
 
-
-
-
-
-
+    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r")
+    List<Restaurant> getAllWithDishes();
 }

@@ -83,7 +83,7 @@ class AdminRestControllerTest {
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(RES1,RES2,RES3,RESWITHMEALS));
+                .andExpect(contentJson(RES1_TO,RES2_TO,RES3_TO,RESWM_TO));
     }
 
     @Test

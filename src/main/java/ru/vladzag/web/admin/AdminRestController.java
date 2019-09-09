@@ -35,9 +35,9 @@ public class AdminRestController {
     public static final String REST_URL = "/rest/admin/restaurants";
 
     @GetMapping
-    public List<Restaurant> getAll() {
+    public List<RestaurantTo> getAll() {
         log.info("Admin getAll");
-        return service.getAll();
+        return service.getAllWithDishes();
     }
 
     @GetMapping("/history")

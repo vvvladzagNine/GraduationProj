@@ -80,7 +80,7 @@ class UserRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(RES1,RES2,RES3,RESWITHMEALS));
+                .andExpect(contentJson(RES1_TO,RES2_TO,RES3_TO,RESWM_TO));
     }
     @Test
     void getScore() throws Exception {

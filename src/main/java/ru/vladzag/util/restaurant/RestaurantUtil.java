@@ -66,4 +66,21 @@ public class RestaurantUtil {
 
 
     }
+
+    public static List<RestaurantTo> getToWithDishes(List<Restaurant> list, LocalDate date){
+        return list.stream()
+                .map(r ->{
+                    RestaurantTo rTo = new RestaurantTo(r.getId(),r.getName());
+                    rTo.setDishes(r.
+                            getDishes()
+                            .stream()
+                            .filter(dish -> dish.getDate().equals(date))
+                            .map(d-> new DishTo(d.getId(),d.getName(),d.getDate(),d.getPrice()))
+                            .collect(Collectors.toList())
+                    );
+                    return rTo; })
+                .collect(Collectors.toList());
+
+
+    }
 }

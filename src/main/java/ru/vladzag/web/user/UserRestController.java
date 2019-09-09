@@ -32,8 +32,9 @@ public class UserRestController {
     RestaurantService rService;
 
     @GetMapping
-    public List<Restaurant> getAll() {
-        return rService.getAll();
+    public List<RestaurantTo> getAll() {
+        log.info("User getAll");
+        return rService.getAllWithDishes();
     }
 
     @GetMapping("/score")

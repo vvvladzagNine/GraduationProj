@@ -101,6 +101,12 @@ public class RestaurantService {
         return restaurantCrudRepo.getAll();
     }
 
+    @Cacheable("restaurantsTo")
+    public List<RestaurantTo> getAllWithDishes(){
+
+        return RestaurantUtil.getToWithDishes(restaurantCrudRepo.getAllWithDishes(),LocalDate.now());
+    }
+
 
     public List<RestaurantTo> getAllToWithCountOfVotes(){
         return RestaurantUtil.getAllWithFilteredCountOfVotesInAllTime(restaurantCrudRepo.getAllWithVotes());
