@@ -11,8 +11,6 @@ Application Context:`/restaraunt`
 > For windows use `Git Bash`
 
 <br/>
-<br/>
-
 
 
 ## Endpoints for admin:
