@@ -7,7 +7,7 @@
 
 ##Endpoints for admin
 
-#### get All Restaurants
+#### get All Restaurants with dishes of today but without votes
 `curl --user admin@gmail.com:admin http://localhost:8080/restaraunt/rest/admin/restaurants`
 
 #### create Restaurant
@@ -48,7 +48,7 @@
 
 ##Endpoints for regular user
 
-#### get All Restaurants
+#### get All Restaurants with dishes of today but without votes
 `curl --user user@yandex.ru:password  http://localhost:8080/restaraunt/rest/user/restaurants/`
 
 #### get scores of restaurants of current voting (cache expire every 30 seconds)

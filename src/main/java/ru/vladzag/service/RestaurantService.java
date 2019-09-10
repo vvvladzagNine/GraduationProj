@@ -45,7 +45,6 @@ public class RestaurantService {
         return restaurantCrudRepo.getWithMenu(id);
     }
 
-    @Cacheable("restaurantsTo")
     public RestaurantTo getWithMenuInDate(int id, LocalDate date){
         Restaurant r =restaurantCrudRepo.getWithMenu(id);
         checkNotFoundWithId(r,id);

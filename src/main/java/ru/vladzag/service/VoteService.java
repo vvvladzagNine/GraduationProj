@@ -1,6 +1,7 @@
 package ru.vladzag.service;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.vladzag.model.Vote;
 import ru.vladzag.repository.user.UserJpaRepo;
@@ -77,7 +78,7 @@ public class VoteService {
 
     }
 
-    //@Cacheable("votes")
+    @Cacheable("votes")
     public List<VoteTo> getVotesForUser(int userId){
         List<Vote> votes = voteCrudRepo.getVotesByUser(userId);
         return votes

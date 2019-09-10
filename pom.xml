@@ -44,9 +44,10 @@
     </properties>
 
     <build>
-        <finalName>topjava</finalName>
+        <finalName>vladzag</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

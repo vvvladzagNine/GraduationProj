@@ -38,7 +38,6 @@
     </cache-template>
 
 
-
     <cache alias="restaurants" uses-template="singleNonExpiryCache" />
     <cache alias="restaurantsTo" uses-template="littleHeapNonExpiryCache"/>
 
