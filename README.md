@@ -1,3 +1,8 @@
+# Rest API
+на стеке Maven/ Spring MVC/ Security/ REST(Jackson)/ Java 8 Stream API:
+- реализация сохранения в базы Postgres и HSQLDB на основе Spring JDBC, JPA(Hibernate) и Spring-Data-JPA
+
+
 ## How to run:
 Run ->
 Edit configurations ->
