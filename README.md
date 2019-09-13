@@ -71,7 +71,7 @@ Application Context:`/restaraunt`
 `curl --user user@yandex.ru:password -X POST http://localhost:8080/restaraunt/rest/user/restaurants/voter?id=100005`
 
 #### update vote(vote for Restaurant 100002)
-`curl --user user@yandex.ru:password -X PUT http://localhost:8080/restaraunt/rest/user/restaurants/voter?resId=100002&voteId=100009`
+`curl --user user@yandex.ru:password -X PUT "http://localhost:8080/restaraunt/rest/user/restaurants/voter?resId=100002&voteId=100009"`
 
 #### get history of votes (cache expire every 3 minutes)
 `curl --user user@yandex.ru:password  http://localhost:8080/restaraunt/rest/user/restaurants/history`
